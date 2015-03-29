@@ -120,16 +120,11 @@ public class Style{
             fontDescriptor=baseFontDescriptor()
         }
         
-        var localAttributes: [NSString:AnyObject] = [:]
-        
-        var size: CGFloat?
-        
-        if (definition["size"] != nil){
-            size = scaledSize(definition["size"] as CGFloat)
-        }
-        
-        if (size != nil){
-            localAttributes[UIFontDescriptorSizeAttribute] = size
+        var localAttributes: [NSObject:AnyObject] = [:]
+
+        if let size: CGFloat = definition["size"] as? CGFloat {
+            let realSize = scaledSize(size)
+            localAttributes[UIFontDescriptorSizeAttribute] = realSize
         }
         
         if let family: String = definition["family"] as? String {
