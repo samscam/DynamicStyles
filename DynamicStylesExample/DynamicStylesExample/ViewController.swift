@@ -18,8 +18,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        stylesheet=DynamicStyles.Stylesheet(named: "Stylesheet")
-        
+        stylesheet=Stylesheet.defaultStylesheet
+            
         tableView.estimatedRowHeight=54
         tableView.rowHeight=UITableViewAutomaticDimension
     }

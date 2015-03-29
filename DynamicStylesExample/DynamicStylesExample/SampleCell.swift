@@ -11,13 +11,13 @@ import DynamicStyles
 
 class SampleCell: UITableViewCell{
     
-    @IBOutlet weak var styleDescriptionLabel: UILabel!
-    @IBOutlet weak var sampleLabel: UILabel!
+    @IBOutlet weak var styleDescriptionLabel: DynamicStyleLabel!
+    @IBOutlet weak var sampleLabel: DynamicStyleLabel!
     
     var style: DynamicStyles.Style? {
         didSet{
             self.styleDescriptionLabel.text=self.style?.name
-            self.sampleLabel.font=self.style?.font()
+            self.sampleLabel.style=self.style
             self.setNeedsLayout()
             self.layoutIfNeeded()
         }
