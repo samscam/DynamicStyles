@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>megahead</key>
+	<dict>
+		<key>parent</key>
+		<string>heading</string>
+		<key>size</key>
+		<integer>48</integer>
+		<key>face</key>
+		<string>Ultra Light</string>
+	</dict>
+	<key>typewriter</key>
+	<dict>
+		<key>family</key>
+		<string>American Typewriter</string>
+	</dict>
+	<key>typewriter-bold</key>
+	<dict>
+		<key>parent</key>
+		<string>typewriter</string>
+		<key>face</key>
+		<string>Bold</string>
+	</dict>
+	<key>caption</key>
+	<dict>
+		<key>size</key>
+		<integer>10</integer>
+		<key>face</key>
+		<string>Italic</string>
+	</dict>
+	<key>heading</key>
+	<dict>
+		<key>family</key>
+		<string>Avenir Next</string>
+		<key>face</key>
+		<string>Heavy</string>
+		<key>size</key>
+		<integer>24</integer>
+	</dict>
+</dict>
+</plist>
