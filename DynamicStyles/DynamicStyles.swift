@@ -173,11 +173,14 @@ public class Style{
     public var style: Style? {
         didSet{
             self.font=style?.font()
+            self.setNeedsLayout()
+            self.layoutIfNeeded()
         }
     }
     
     override public func prepareForInterfaceBuilder() {
-
+        
+        // THIS IS NASTY - It needs to get the plist from the target project rather than the pods/library - gah!
         
         let processInfo = NSProcessInfo.processInfo()
         let environment = processInfo.environment as [String:String]
@@ -186,7 +189,7 @@ public class Style{
         
         if directories.count != 0 {
             var path = directories[0] as String
-            path = path.stringByAppendingPathComponent("Stylesheet.plist")
+            path = path.stringByAppendingPathComponent("../Stylesheet.plist")
             self.stylesheet=Stylesheet(path: path)!
         }
         
