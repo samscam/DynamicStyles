@@ -8,6 +8,7 @@
 
 import UIKit
 import XCTest
+import DynamicStyles
 
 class DynamicStylesTests: XCTestCase {
     
