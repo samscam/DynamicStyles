@@ -153,6 +153,53 @@ public class Style{
     }
 }
 
+// MARK: - UIView inspectability
+
+
+@IBDesignable public class DynamicStyleLabel: UILabel{
+    
+    var stylesheet: Stylesheet = Stylesheet.defaultStylesheet
+    
+    @IBInspectable public var styleName: NSString? {
+        didSet{
+            if (styleName != nil) {
+                style=stylesheet.style(styleName!)
+            } else {
+                style=nil
+            }
+        }
+    }
+    
+    public var style: Style? {
+        didSet{
+            self.font=style?.font()
+        }
+    }
+    
+    override public func prepareForInterfaceBuilder() {
+
+        
+        let processInfo = NSProcessInfo.processInfo()
+        let environment = processInfo.environment as [String:String]
+        let projectSourceDirectories : AnyObject = environment["IB_PROJECT_SOURCE_DIRECTORIES"]!
+        let directories = projectSourceDirectories.componentsSeparatedByString(":")
+        
+        if directories.count != 0 {
+            var path = directories[0] as String
+            path = path.stringByAppendingPathComponent("Stylesheet.plist")
+            self.stylesheet=Stylesheet(path: path)!
+        }
+        
+        // Force the style to be updated
+        if let sn=self.styleName {
+            self.style=self.stylesheet.style(sn)
+        }
+    }
+    
+}
+
+// MARK: - Utility functions...
+
 func baseFontDescriptor()->UIFontDescriptor{
     let size = scaledSize(17)
     return UIFontDescriptor(fontAttributes: [UIFontDescriptorFamilyAttribute:"Helvetica Neue",
