@@ -12,33 +12,71 @@ import UIKit
 public class Stylesheet{
     
     public var styles: [String:Style]
+    
+    struct Singleton {
+        static var instance: Stylesheet?
+        static var token: dispatch_once_t = 0
+    }
+    
+    /// Creates a shared stylesheet with a given name - if you need to, call this early on
+    
+    public class func defaultStylesheet(named stylesheetName: String)->Stylesheet{
+        dispatch_once(&Singleton.token) {
+            Singleton.instance = Stylesheet(named: stylesheetName)
+        }
+        return Singleton.instance!
+    }
+    
+    /// Returns the shared stylesheet - by default it looks for one called "Stylesheet.plist"
+    
+    public class var defaultStylesheet: Stylesheet {
+        dispatch_once(&Singleton.token) {
+            Singleton.instance = Stylesheet(named: "Stylesheet")
+        }
+        return Singleton.instance!
+    }
 
-    public init?(named stylesheetName: String,
+    /// Designated initialiser - grabs the named Stylesheet.plist and instantiates all the styles it contains
+    
+
+    
+    public init?(path stylesheetPath: String?){
+        styles=[:]
+        
+        if (stylesheetPath == nil){
+            return
+        }
+
+        if let stylesheetDict = NSDictionary(contentsOfFile: stylesheetPath!){
+            
+            // Iterate through the incoming dict and create style objects for each of the keys
+            for (styleIdentifier: String, styleDict: [String:AnyObject]) in stylesheetDict as [String:[String:AnyObject]] {
+                styles[styleIdentifier]=Style(name: styleIdentifier, definition: styleDict)
+            }
+        }
+        
+        // Resolve parents
+        for (styleIdentifier: String, style: Style) in styles{
+            if (style.parentName != nil){
+                style.parent=self.style(style.parentName!)
+            }
+        }
+        
+        // Check for cyclicity
+        for (styleIdentifier: String, style: Style) in styles{
+            assert(!style.parentIsCyclical(),"Styles must not be cyclical")
+        }
+    }
+    
+    /// Convenience initialisers
+    
+    public convenience init?(named stylesheetName: String,
         inBundle bundle: NSBundle?){
-            styles=[:]
+            
             var inBundle = (bundle != nil) ? bundle : NSBundle.mainBundle()
-            if let stylesheetPath: String? = inBundle?.pathForResource(stylesheetName, ofType: "plist") {
-                if let stylesheetDict = NSDictionary(contentsOfFile: stylesheetPath!){
-                    
-                    // Iterate through the incoming dict and create style objects for each of the keys
-                    for (styleIdentifier: String, styleDict: [String:AnyObject]) in stylesheetDict as [String:[String:AnyObject]] {
-                        styles[styleIdentifier]=Style(name: styleIdentifier, definition: styleDict)
-                    }
-                }
-            }
             
-            // Resolve parents
-            for (styleIdentifier: String, style: Style) in styles{
-                if (style.parentName != nil){
-                    style.parent=self.style(style.parentName!)
-                }
-            }
-            
-            // Check for cyclicity
-            for (styleIdentifier: String, style: Style) in styles{
-                assert(!style.parentIsCyclical(),"Styles must not be cyclical")
-            }
-            
+            let stylesheetPath: String? = inBundle?.pathForResource(stylesheetName, ofType: "plist")
+            self.init(path:stylesheetPath)
             
     }
     
@@ -49,11 +87,6 @@ public class Stylesheet{
     public func style(name: String)->Style?{
         return styles[name]
     }
-    
-    func fontForStyle(style: String)->UIFont?{
-        return nil
-    }
-    
     
 }
 
