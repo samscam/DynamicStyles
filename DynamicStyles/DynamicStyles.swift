@@ -36,7 +36,7 @@ public class Stylesheet{
         return Singleton.instance!
     }
 
-    /// Designated initialiser - grabs the named Stylesheet.plist and instantiates all the styles it contains
+    /// Designated initialiser - grabs the named .plist and instantiates all the styles it contains
     
     public init?(path stylesheetPath: String?){
         styles=[:]
@@ -194,6 +194,55 @@ public class Style{
         
         self.stylesheet=Stylesheet(named: "Stylesheet", inBundle: bundle)
 
+        // Force the style to be updated
+        if let sn=self.styleName {
+            self.style=self.stylesheet?.style(sn)
+        }
+    }
+    
+}
+
+
+@IBDesignable public class DynamicStyleButton: UIButton{
+    
+    var stylesheet: Stylesheet? = Stylesheet.defaultStylesheet
+    
+    @IBInspectable public var styleName: NSString? {
+        didSet{
+            if (styleName != nil) {
+                style=stylesheet?.style(styleName!)
+            } else {
+                style=nil
+            }
+        }
+    }
+    
+    public var style: Style? {
+        didSet{
+            self.titleLabel?.font=style?.font()
+        }
+    }
+    
+    override public func prepareForInterfaceBuilder() {
+        
+        // We need to fish around directories to create subsitute for the main bundle when using Interface Builder live rendering
+        let processInfo = NSProcessInfo.processInfo()
+        let environment = processInfo.environment as [String:String]
+        let projectSourceDirectories : String = environment["IB_PROJECT_SOURCE_DIRECTORIES"]!
+        let directories = projectSourceDirectories.componentsSeparatedByString(":")
+        
+        var path = directories[0] as String
+        
+        // Remove pods from the path components (assuming we are in a cocoapods environment)
+        if (path.lastPathComponent == "Pods"){
+            path=path.stringByDeletingLastPathComponent
+        }
+        
+        // Create a bundle based on the project path
+        let bundle=NSBundle(path: path)
+        
+        self.stylesheet=Stylesheet(named: "Stylesheet", inBundle: bundle)
+        
         // Force the style to be updated
         if let sn=self.styleName {
             self.style=self.stylesheet?.style(sn)
