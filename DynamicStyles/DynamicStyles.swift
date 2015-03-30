@@ -27,7 +27,7 @@ public class Stylesheet{
         return Singleton.instance!
     }
     
-    /// Returns the shared stylesheet - by default it looks for one called "Stylesheet.plist"
+    /// Returns the shared stylesheet - by default it looks for one called "Stylesheet.plist" in the main bundle
     
     public class var defaultStylesheet: Stylesheet {
         dispatch_once(&Singleton.token) {
@@ -37,8 +37,6 @@ public class Stylesheet{
     }
 
     /// Designated initialiser - grabs the named Stylesheet.plist and instantiates all the styles it contains
-    
-
     
     public init?(path stylesheetPath: String?){
         styles=[:]
@@ -158,12 +156,12 @@ public class Style{
 
 @IBDesignable public class DynamicStyleLabel: UILabel{
     
-    var stylesheet: Stylesheet = Stylesheet.defaultStylesheet
+    var stylesheet: Stylesheet? = Stylesheet.defaultStylesheet
     
     @IBInspectable public var styleName: NSString? {
         didSet{
             if (styleName != nil) {
-                style=stylesheet.style(styleName!)
+                style=stylesheet?.style(styleName!)
             } else {
                 style=nil
             }
@@ -173,29 +171,32 @@ public class Style{
     public var style: Style? {
         didSet{
             self.font=style?.font()
-            self.setNeedsLayout()
-            self.layoutIfNeeded()
         }
     }
     
     override public func prepareForInterfaceBuilder() {
         
-        // THIS IS NASTY - It needs to get the plist from the target project rather than the pods/library - gah!
-        
+        // We need to fish around directories to create subsitute for the main bundle when using Interface Builder live rendering
         let processInfo = NSProcessInfo.processInfo()
         let environment = processInfo.environment as [String:String]
-        let projectSourceDirectories : AnyObject = environment["IB_PROJECT_SOURCE_DIRECTORIES"]!
+        let projectSourceDirectories : String = environment["IB_PROJECT_SOURCE_DIRECTORIES"]!
         let directories = projectSourceDirectories.componentsSeparatedByString(":")
+
+        var path = directories[0] as String
         
-        if directories.count != 0 {
-            var path = directories[0] as String
-            path = path.stringByAppendingPathComponent("../Stylesheet.plist")
-            self.stylesheet=Stylesheet(path: path)!
+        // Remove pods from the path components (assuming we are in a cocoapods environment)
+        if (path.lastPathComponent == "Pods"){
+            path=path.stringByDeletingLastPathComponent
         }
         
+        // Create a bundle based on the project path
+        let bundle=NSBundle(path: path)
+        
+        self.stylesheet=Stylesheet(named: "Stylesheet", inBundle: bundle)
+
         // Force the style to be updated
         if let sn=self.styleName {
-            self.style=self.stylesheet.style(sn)
+            self.style=self.stylesheet?.style(sn)
         }
     }
     
