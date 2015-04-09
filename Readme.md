@@ -8,7 +8,7 @@
 * WYSIWYG styles in InterfaceBuilder...
 * ... or apply styles in code!
 * Supports DynamicType font scaling for full accessible joy.
-* Written in **Swift**.
+* Written in **Swift** - (now swift 1.2 and XCode 6.3).
 * Compatible with iOS **8.0+**
 * Contributions welcome!
 * **Currently in rapid development! Expect frequent updates! Expect things to break!**
@@ -19,7 +19,7 @@
 
 You're best using [CocoaPods](http://cocoapods.org)
 
-Add `pod 'DynamicStyles', '~>0.1.2'` to your podfile.
+Add `pod 'DynamicStyles', '~>0.1.3'` to your podfile.
 
 Run `pod install`
 
@@ -62,9 +62,6 @@ or...
 		* parent (string - reference to another style name - may not be circular)
 	* exampleBaseStyle
 		* family : Courier
-	* exampleHeadlineStyle
-		* size : 48
-		* parent : exampleBaseStyle
 	* exampleHeadlineStyle
 		* size : 48
 		* parent : exampleBaseStyle
