@@ -48,7 +48,7 @@ public class Stylesheet{
         if let stylesheetDict = NSDictionary(contentsOfFile: stylesheetPath!){
             
             // Iterate through the incoming dict and create style objects for each of the keys
-            for (styleIdentifier: String, styleDict: [String:AnyObject]) in stylesheetDict as [String:[String:AnyObject]] {
+            for (styleIdentifier: String, styleDict: [String:AnyObject]) in stylesheetDict as! [String:[String:AnyObject]] {
                 styles[styleIdentifier]=Style(name: styleIdentifier, definition: styleDict)
             }
         }
@@ -161,7 +161,7 @@ public class Style{
     @IBInspectable public var styleName: NSString? {
         didSet{
             if (styleName != nil) {
-                style=stylesheet?.style(styleName!)
+                style=stylesheet?.style(styleName! as String)
             } else {
                 style=nil
             }
@@ -178,7 +178,7 @@ public class Style{
         
         // We need to fish around directories to create subsitute for the main bundle when using Interface Builder live rendering
         let processInfo = NSProcessInfo.processInfo()
-        let environment = processInfo.environment as [String:String]
+        let environment = processInfo.environment as! [String:String]
         let projectSourceDirectories : String = environment["IB_PROJECT_SOURCE_DIRECTORIES"]!
         let directories = projectSourceDirectories.componentsSeparatedByString(":")
 
@@ -196,7 +196,7 @@ public class Style{
 
         // Force the style to be updated
         if let sn=self.styleName {
-            self.style=self.stylesheet?.style(sn)
+            self.style=self.stylesheet?.style(sn as String)
         }
     }
     
@@ -210,7 +210,7 @@ public class Style{
     @IBInspectable public var styleName: NSString? {
         didSet{
             if (styleName != nil) {
-                style=stylesheet?.style(styleName!)
+                style=stylesheet?.style(styleName! as String)
             } else {
                 style=nil
             }
@@ -227,7 +227,7 @@ public class Style{
         
         // We need to fish around directories to create subsitute for the main bundle when using Interface Builder live rendering
         let processInfo = NSProcessInfo.processInfo()
-        let environment = processInfo.environment as [String:String]
+        let environment = processInfo.environment as! [String:String]
         let projectSourceDirectories : String = environment["IB_PROJECT_SOURCE_DIRECTORIES"]!
         let directories = projectSourceDirectories.componentsSeparatedByString(":")
         
@@ -245,7 +245,7 @@ public class Style{
         
         // Force the style to be updated
         if let sn=self.styleName {
-            self.style=self.stylesheet?.style(sn)
+            self.style=self.stylesheet?.style(sn as String)
         }
     }
     
