@@ -7,8 +7,8 @@
 * Write a single stylesheet to manage all the typography in your iOS app!
 * WYSIWYG styles in InterfaceBuilder...
 * ... or apply styles in code!
-* Supports DynamicType font scaling for full accessible joy.
-* Written in **Swift** - (now swift 1.2 and XCode 6.3).
+* Uses Apple's DynamicType font scaling for full accessible joy (it applies this to everything at the moment - must implement an option to use it selectively!)
+* Written in **Swift** - (now Swift 1.2 and XCode 6.3).
 * Compatible with iOS **8.0+**
 * Contributions welcome!
 * **Currently in rapid development! Expect frequent updates! Expect things to break!**
@@ -39,6 +39,7 @@ You can theoretically tell it to use a custom named plist from code but you won'
 
 The same goes for buttons. The custom class for them is `DynamicStyleButton`
 
+** IMPORTANT NOTE: ** Due to a [bug in Xcode 6.3](http://stackoverflow.com/questions/29544738/xcode-6-3-freezes-hangs-after-opening-xib-file) (release) use of any @IBDesignable features will cause Xcode to hang when navigating away from a nib in the project navigator. It worked fine with the recent betas - so if you haven't deleted your betas, until Apple fixes the problem, use that.
 
 ### Code
 
