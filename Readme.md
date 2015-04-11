@@ -1,12 +1,10 @@
-# DynamicStyles
-
-
 ## Overview
 **DynamicStyles**, the missing stylesheet manager for iOS apps.
 
 * Write a single stylesheet to manage all the typography in your iOS app!
 * WYSIWYG styles in InterfaceBuilder...
 * ... or apply styles in code!
+* ** ONLY COVERS: Fonts, weights, and sizes at the moment! **
 * Uses Apple's DynamicType font scaling for full accessible joy (it applies this to everything at the moment - must implement an option to use it selectively!)
 * Written in **Swift** - (now Swift 1.2 and XCode 6.3).
 * Compatible with iOS **8.0+**
