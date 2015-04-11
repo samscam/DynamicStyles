@@ -9,6 +9,9 @@
 import Foundation
 import UIKit
 
+
+// MARK: - DynamicStyles
+
 /**
 A `Stylesheet` is a container for a selection of styles loaded from a plist. Currently this only properly supports the default `Stylesheet.plist` which should be located somewhere in your project.
 */
@@ -174,8 +177,6 @@ public class Style{
         return false
     }
     
-    // MARK: - Utility functions...
-    
     /// The base font descriptor is based on Helvetica Neue at 17pt and is scaled
     
     func baseFontDescriptor()->UIFontDescriptor{
@@ -196,7 +197,7 @@ public class Style{
 
 }
 
-// MARK: - UIView inspectability
+// MARK: - UIView subclasses
 
 /**
     `DynamicStyleLabel` is a UILabel subclass which supports styling
@@ -289,6 +290,7 @@ public class Style{
     
 }
 
+// MARK: - NSBundle extension
 
 
 extension NSBundle{
