@@ -9,6 +9,10 @@
 import Foundation
 import UIKit
 
+/**
+A `Stylesheet` is a container for a selection of styles loaded from a plist.
+*/
+
 public class Stylesheet{
     
     public var styles: [String:Style]
@@ -149,6 +153,23 @@ public class Style{
         }
         return false
     }
+    
+    // MARK: - Utility functions...
+    
+    func baseFontDescriptor()->UIFontDescriptor{
+        let size = scaledSize(17)
+        return UIFontDescriptor(fontAttributes: [UIFontDescriptorFamilyAttribute:"Helvetica Neue",
+            UIFontDescriptorSizeAttribute:size])
+        
+    }
+    
+    func scaledSize(targetSize: CGFloat)->CGFloat{
+        let systemFontDescriptor = UIFontDescriptor.preferredFontDescriptorWithTextStyle(UIFontTextStyleBody)
+        let systemPointSize: CGFloat = systemFontDescriptor.pointSize
+        let size = (systemPointSize/17) * targetSize
+        return size
+    }
+
 }
 
 // MARK: - UIView inspectability
@@ -176,22 +197,7 @@ public class Style{
     
     override public func prepareForInterfaceBuilder() {
         
-        // We need to fish around directories to create subsitute for the main bundle when using Interface Builder live rendering
-        let processInfo = NSProcessInfo.processInfo()
-        let environment = processInfo.environment as! [String:String]
-        let projectSourceDirectories : String = environment["IB_PROJECT_SOURCE_DIRECTORIES"]!
-        let directories = projectSourceDirectories.componentsSeparatedByString(":")
-
-        var path = directories[0] as String
-        
-        // Remove pods from the path components (assuming we are in a cocoapods environment)
-        if (path.lastPathComponent == "Pods"){
-            path=path.stringByDeletingLastPathComponent
-        }
-        
-        // Create a bundle based on the project path
-        let bundle=NSBundle(path: path)
-        
+        let bundle = NSBundle.projectBundleForInterfaceBuilder()
         self.stylesheet=Stylesheet(named: "Stylesheet", inBundle: bundle)
 
         // Force the style to be updated
@@ -200,6 +206,7 @@ public class Style{
         }
     }
     
+
 }
 
 
@@ -225,7 +232,25 @@ public class Style{
     
     override public func prepareForInterfaceBuilder() {
         
-        // We need to fish around directories to create subsitute for the main bundle when using Interface Builder live rendering
+        let bundle = NSBundle.projectBundleForInterfaceBuilder()
+        self.stylesheet=Stylesheet(named: "Stylesheet", inBundle: bundle)
+        
+        // Force the style to be updated
+        if let sn=self.styleName {
+            self.style=self.stylesheet?.style(sn as String)
+        }
+    }
+    
+}
+
+
+
+extension NSBundle{
+    
+    /// Returns an NSBundle based on the project's root directory. In the context of Interface Builder, asking for NSBundle.mainBundle() will provide a bundle for internal part of xcode... This instead gives us something from which we can find project-specific resources like the `Stylesheet.plist`
+    
+    class func projectBundleForInterfaceBuilder() -> NSBundle? {
+
         let processInfo = NSProcessInfo.processInfo()
         let environment = processInfo.environment as! [String:String]
         let projectSourceDirectories : String = environment["IB_PROJECT_SOURCE_DIRECTORIES"]!
@@ -238,31 +263,8 @@ public class Style{
             path=path.stringByDeletingLastPathComponent
         }
         
-        // Create a bundle based on the project path
-        let bundle=NSBundle(path: path)
+        // Create and a bundle based on the project path
+        return NSBundle(path: path)
         
-        self.stylesheet=Stylesheet(named: "Stylesheet", inBundle: bundle)
-        
-        // Force the style to be updated
-        if let sn=self.styleName {
-            self.style=self.stylesheet?.style(sn as String)
-        }
     }
-    
-}
-
-// MARK: - Utility functions...
-
-func baseFontDescriptor()->UIFontDescriptor{
-    let size = scaledSize(17)
-    return UIFontDescriptor(fontAttributes: [UIFontDescriptorFamilyAttribute:"Helvetica Neue",
-        UIFontDescriptorSizeAttribute:size])
-    
-}
-
-func scaledSize(targetSize: CGFloat)->CGFloat{
-    let systemFontDescriptor = UIFontDescriptor.preferredFontDescriptorWithTextStyle(UIFontTextStyleBody)
-    let systemPointSize: CGFloat = systemFontDescriptor.pointSize
-    let size = (systemPointSize/17) * targetSize
-    return size
 }
