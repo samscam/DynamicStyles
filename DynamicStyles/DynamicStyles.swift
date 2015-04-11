@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 /**
-A `Stylesheet` is a container for a selection of styles loaded from a plist.
+A `Stylesheet` is a container for a selection of styles loaded from a plist. Currently this only properly supports the default `Stylesheet.plist` which should be located somewhere in your project.
 */
 
 public class Stylesheet{
@@ -22,7 +22,7 @@ public class Stylesheet{
         static var token: dispatch_once_t = 0
     }
     
-    /// Creates a shared stylesheet with a given name - if you need to, call this early on
+    /// Loads a shared stylesheet with a given name - not tested!
     
     public class func defaultStylesheet(named stylesheetName: String)->Stylesheet{
         dispatch_once(&Singleton.token) {
@@ -64,13 +64,13 @@ public class Stylesheet{
             }
         }
         
-        // Check for cyclicity
+        // Check for cyclicity. This will throw an error at runtime if styles are inbred ;-)
         for (styleIdentifier: String, style: Style) in styles{
             assert(!style.parentIsCyclical(),"Styles must not be cyclical")
         }
     }
     
-    /// Convenience initialisers
+    // Convenience initialisers
     
     public convenience init?(named stylesheetName: String,
         inBundle bundle: NSBundle?){
@@ -92,13 +92,29 @@ public class Stylesheet{
     
 }
 
+/**
+    `Style` is the main model object for styles!
+*/
+
 public class Style{
     
+    /// The definition is a copy of the contents of the plist fragment
     private var definition: [String:AnyObject]
+    
+    /// The name of the style
     public var name: String
     
+    /// The name of the parent style - used internally to resolve the hierarchy
     var parentName: String?
-    var parent: Style?
+    
+    /// The parent style object - populated by the stylesheet after creation. Properties of the parent will be reflected unless overriden by the child...
+    public var parent: Style?
+    
+    /**
+    The designated initializer
+    @param name The name of this style
+    @param dictionary The fragment of the plist containing the definition of the style
+    */
     
     public init(name: String, definition dictionary: [String:AnyObject]){
         definition=dictionary
@@ -106,6 +122,7 @@ public class Style{
         self.parentName=self.definition["parent"] as? String
     }
     
+    /// Returns a UIFont object based on this style
     public func font()->UIFont{
         let fontDescriptor = self.fontDescriptor()
         let scaledPointSize=fontDescriptor.pointSize
@@ -113,6 +130,7 @@ public class Style{
         return UIFont(descriptor: fontDescriptor, size: scaledPointSize)
     }
     
+    /// Returns a UIFontDescriptor, taking the parent style if present and overriding it with anything in the style definition
     public func fontDescriptor()->UIFontDescriptor{
 
         var fontDescriptor: UIFontDescriptor?
@@ -141,6 +159,8 @@ public class Style{
         return fontDescriptor!
     }
     
+    
+    /// Check for whether the parent relationship for this style is cyclical (which would be a bad thing)
     public func parentIsCyclical()->Bool{
 
         var thisParent: Style? = self.parent
@@ -156,12 +176,16 @@ public class Style{
     
     // MARK: - Utility functions...
     
+    /// The base font descriptor is based on Helvetica Neue at 17pt and is scaled
+    
     func baseFontDescriptor()->UIFontDescriptor{
         let size = scaledSize(17)
         return UIFontDescriptor(fontAttributes: [UIFontDescriptorFamilyAttribute:"Helvetica Neue",
             UIFontDescriptorSizeAttribute:size])
         
     }
+    
+    /// Calculates a scaled size based on the users's current Dynamic Type settings
     
     func scaledSize(targetSize: CGFloat)->CGFloat{
         let systemFontDescriptor = UIFontDescriptor.preferredFontDescriptorWithTextStyle(UIFontTextStyleBody)
@@ -174,10 +198,17 @@ public class Style{
 
 // MARK: - UIView inspectability
 
+/**
+    `DynamicStyleLabel` is a UILabel subclass which supports styling
+*/
 
 @IBDesignable public class DynamicStyleLabel: UILabel{
     
+    /// The active stylesheet (defaults to the default one)
+    
     var stylesheet: Stylesheet? = Stylesheet.defaultStylesheet
+    
+    /// The *name* of the style to be applied. Setting this (in code or from Interface Builder) will cause the style with said name from the active stylesheet to be applied to the label.
     
     @IBInspectable public var styleName: NSString? {
         didSet{
@@ -189,11 +220,15 @@ public class Style{
         }
     }
     
+    /// The *style* - setting this sets the font of the label to match the font defined by the style
+    
     public var style: Style? {
         didSet{
             self.font=style?.font()
         }
     }
+    
+    /// Provides @IBDesignable functionality
     
     override public func prepareForInterfaceBuilder() {
         
@@ -209,10 +244,17 @@ public class Style{
 
 }
 
+/**
+`DynamicStyleButton` is a UIButton subclass which supports styling
+*/
 
 @IBDesignable public class DynamicStyleButton: UIButton{
     
+    /// The active stylesheet (defaults to the default one).
+    
     var stylesheet: Stylesheet? = Stylesheet.defaultStylesheet
+    
+    /// The *name* of the style to be applied. Setting this (in code or from Interface Builder) will cause the style with said name from the active stylesheet to be applied to the label.
     
     @IBInspectable public var styleName: NSString? {
         didSet{
@@ -224,11 +266,15 @@ public class Style{
         }
     }
     
+    /// The *style* - setting this sets the font of the label to match the font defined by the style
+    
     public var style: Style? {
         didSet{
             self.titleLabel?.font=style?.font()
         }
     }
+    
+    /// Provides @IBDesignable functionality
     
     override public func prepareForInterfaceBuilder() {
         
