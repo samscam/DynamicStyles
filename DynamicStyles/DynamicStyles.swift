@@ -101,17 +101,127 @@ public class Stylesheet{
 
 public class Style{
     
-    /// The definition is a copy of the contents of the plist fragment
-    private var definition: [String:AnyObject]
     
     /// The name of the style
     public var name: String
     
     /// The name of the parent style - used internally to resolve the hierarchy
-    var parentName: String?
+    private var parentName: String?
     
     /// The parent style object - populated by the stylesheet after creation. Properties of the parent will be reflected unless overriden by the child...
     public var parent: Style?
+
+    /// UIFont object based on this style
+    public var font: UIFont? {
+        get{
+            let fontDescriptor = self.fontDescriptor
+            let size=fontDescriptor.pointSize
+            return UIFont(descriptor: fontDescriptor, size: size)
+        }
+    }
+    
+    
+    /// Returns a UIFontDescriptor
+    public var fontDescriptor: UIFontDescriptor {
+        get{
+            var fontAttributes: [NSObject:AnyObject] = [:]
+            
+            fontAttributes[UIFontDescriptorSizeAttribute] = scaledSize
+            fontAttributes[UIFontDescriptorFamilyAttribute] = family
+            fontAttributes[UIFontDescriptorFaceAttribute] = face
+            
+            return UIFontDescriptor(fontAttributes: fontAttributes)
+        }
+    }
+    
+    // MARK: - Primitive getters and setters for the various attributes
+    
+    /// Family name as a string - if nothing is set, will resolve to the parent's family, or default to Helvetica Neue
+    public var family: String?{
+        get{
+            if ( _family != nil ){
+                return _family
+            } else if (parent != nil){
+                return parent!.family
+            } else {
+                return "Helvetica Neue"
+            }
+        }
+        set{
+            _family=newValue
+        }
+    }
+    
+    /// Private variable to back family name
+    private var _family: String?
+    
+    
+    /// Face as a string
+    public var face: String{
+        get{
+            if ( _face != nil ){
+                return _face!
+            } else if (parent != nil) {
+                return parent!.face
+            } else {
+                return "Regular"
+            }
+        }
+        set{
+            _face=newValue
+        }
+    }
+    
+    /// Private variable to back face name
+    private var _face: String?
+    
+    /// RAW size of the font (prior to any dynamic scaling)
+    public var size: CGFloat{
+        get{
+            if ( _size != nil ){
+                return _size!
+            } else if ( parent != nil ) {
+                return parent!.size
+            } else {
+                return 17
+            }
+        }
+        set{
+            _size=newValue
+        }
+    }
+    
+    private var _size: CGFloat?
+    
+    /// The scaled size, obeying whether scaling is enabled for this style
+    public var scaledSize: CGFloat {
+        get{
+            if (self.shouldScale){
+                return scaleSize(self.size)
+            } else {
+                return self.size
+            }
+        }
+    }
+    
+    public var shouldScale: Bool{
+        get{
+            if (_shouldScale != nil){
+                return _shouldScale!
+            } else if (parent != nil){
+                return parent!.shouldScale
+            } else {
+                return false
+            }
+        }
+        set{
+            _shouldScale = newValue
+        }
+    }
+    
+    private var _shouldScale: Bool?
+    
+    ///
     
     /**
     The designated initializer
@@ -119,48 +229,33 @@ public class Style{
     @param dictionary The fragment of the plist containing the definition of the style
     */
     
-    public init(name: String, definition dictionary: [String:AnyObject]){
-        definition=dictionary
+    public init(name: String, definition : [String:AnyObject]){
+
         self.name=name
-        self.parentName=self.definition["parent"] as? String
+        self.parentName=definition["parent"] as? String
+        
+        // Set properties based on what was in the plist fragment
+        
+        if let familyName = definition["family"] as? String {
+            self.family=familyName
+        }
+        
+        if let faceName = definition["face"] as? String {
+            self.face=faceName
+        }
+        
+        if let sizeNum = definition["size"] as? CGFloat {
+            self.size=sizeNum
+        }
+
+        if let shouldScaleVal = definition["shouldScale"] as? Bool {
+            self.shouldScale=shouldScaleVal
+        }
     }
     
-    /// Returns a UIFont object based on this style
-    public func font()->UIFont{
-        let fontDescriptor = self.fontDescriptor()
-        let scaledPointSize=fontDescriptor.pointSize
-        
-        return UIFont(descriptor: fontDescriptor, size: scaledPointSize)
-    }
-    
-    /// Returns a UIFontDescriptor, taking the parent style if present and overriding it with anything in the style definition
-    public func fontDescriptor()->UIFontDescriptor{
 
-        var fontDescriptor: UIFontDescriptor?
-        if (self.parent != nil){
-            fontDescriptor=self.parent!.fontDescriptor()
-        } else {
-            fontDescriptor=baseFontDescriptor()
-        }
-        
-        var localAttributes: [NSObject:AnyObject] = [:]
 
-        if let size: CGFloat = definition["size"] as? CGFloat {
-            let realSize = scaledSize(size)
-            localAttributes[UIFontDescriptorSizeAttribute] = realSize
-        }
-        
-        if let family: String = definition["family"] as? String {
-            localAttributes[UIFontDescriptorFamilyAttribute] = family
-        }
-        
-        if let face: String = definition["face"] as? String {
-            localAttributes[UIFontDescriptorFaceAttribute] = face
-        }
-        
-        fontDescriptor=fontDescriptor?.fontDescriptorByAddingAttributes(localAttributes)
-        return fontDescriptor!
-    }
+
     
     
     /// Check for whether the parent relationship for this style is cyclical (which would be a bad thing)
@@ -177,18 +272,10 @@ public class Style{
         return false
     }
     
-    /// The base font descriptor is based on Helvetica Neue at 17pt and is scaled
-    
-    func baseFontDescriptor()->UIFontDescriptor{
-        let size = scaledSize(17)
-        return UIFontDescriptor(fontAttributes: [UIFontDescriptorFamilyAttribute:"Helvetica Neue",
-            UIFontDescriptorSizeAttribute:size])
-        
-    }
-    
+
     /// Calculates a scaled size based on the users's current Dynamic Type settings
     
-    func scaledSize(targetSize: CGFloat)->CGFloat{
+    private func scaleSize(targetSize: CGFloat)->CGFloat{
         let systemFontDescriptor = UIFontDescriptor.preferredFontDescriptorWithTextStyle(UIFontTextStyleBody)
         let systemPointSize: CGFloat = systemFontDescriptor.pointSize
         let size = (systemPointSize/17) * targetSize
@@ -225,7 +312,7 @@ public class Style{
     
     public var style: Style? {
         didSet{
-            self.font=style?.font()
+            self.font=style?.font
         }
     }
     
@@ -271,7 +358,7 @@ public class Style{
     
     public var style: Style? {
         didSet{
-            self.titleLabel?.font=style?.font()
+            self.titleLabel?.font=style?.font
         }
     }
     
