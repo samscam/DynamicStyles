@@ -4,8 +4,8 @@
 * Write a single stylesheet to manage all the typography in your iOS app!
 * WYSIWYG styles in InterfaceBuilder...
 * ... or apply styles in code!
-* ** ONLY COVERS: Fonts, weights, and sizes at the moment! **
-* Uses Apple's DynamicType font scaling for full accessible joy (it applies this to everything at the moment - must implement an option to use it selectively!)
+* ** ONLY COVERS: fonts, weights, and sizes at the moment! **
+* Optionally uses Apple's DynamicType font scaling for full accessible joy!
 * Written in **Swift** - (now Swift 1.2 and XCode 6.3).
 * Compatible with iOS **8.0+**
 * Contributions welcome!
@@ -17,13 +17,13 @@
 
 You're best using [CocoaPods](http://cocoapods.org)
 
-Add `pod 'DynamicStyles', '~>0.1.3'` to your podfile.
+Add `pod 'DynamicStyles', '~>0.1.4'` to your podfile.
 
 Run `pod install`
 
 ### ... and then
 
-Create a property list called `Stylesheet.plist` somwehere in your project. There is one in the example project in the repo which you could use as a starting point.
+Create a property list called `Stylesheet.plist` somwehere in your project. There is one in the example project in the repo which you could use as a starting point. See the syntax section below for details.
 
 You can theoretically tell it to use a custom named plist from code but you won't get IB rendering if you do that.
 
@@ -43,7 +43,7 @@ The same goes for buttons. The custom class for them is `DynamicStyleButton`
 
 	label.styleName="heading"
 
-or...
+or in a more verbose way...
 
 	let stylesheet = Stylesheet.defaultStylesheet
 	let headingStyle = stylesheet.style("heading")
@@ -51,17 +51,36 @@ or...
 	
 
 
+
+
 ## Stylesheet Syntax
 
-* root (dictionary)
-	* styleName (dictionary)
-		* family (string) default is Helvetica Neue
-		* face (string) default is Regular
-		* size (number) default is 17
-		* parent (string - reference to another style name - may not be circular)
-	* exampleBaseStyle
-		* family : Courier
-	* exampleHeadlineStyle
-		* size : 48
-		* parent : exampleBaseStyle
+The `Stylesheet.plist` should contain a dictionary of style definitions. Each definition is a dictionary with the name of the style as the key.
+
+Definitions may use the following keys:
+
+key | type | default | notes
+--- | ---- | ------- | -----
+family | string | Helvetica Neue
+face | string | Regular
+size | number | 17
+shouldScale | boolean | NO | Enables dynamic type scaling (including larger accessibility sizes)
+parent | string | | reference to a parent style name - must not be circular
+
+
+_... so an example might look a bit like this_
+
+	* root
+		* baseStyle
+			* family : Courier
+		* headlineStyle
+			* face : Bold
+			* size : 24
+			* parent : baseStyle
+		* bigHeadlineStyle
+			* size : 48
+			* parent : headlineStyle
+		* bodyStyle
+			* shouldScale : true
+			* parent : baseStyle
 
