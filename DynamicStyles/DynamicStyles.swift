@@ -380,11 +380,11 @@ public class Style{
 // MARK: - NSBundle extension
 
 
-extension NSBundle{
+public extension NSBundle{
     
     /// Returns an NSBundle based on the project's root directory. In the context of Interface Builder, asking for NSBundle.mainBundle() will provide a bundle for internal part of xcode... This instead gives us something from which we can find project-specific resources like the `Stylesheet.plist`
     
-    class func projectBundleForInterfaceBuilder() -> NSBundle? {
+    public class func projectBundleForInterfaceBuilder() -> NSBundle? {
 
         let processInfo = NSProcessInfo.processInfo()
         let environment = processInfo.environment as! [String:String]
