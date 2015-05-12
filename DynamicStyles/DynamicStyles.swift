@@ -134,6 +134,25 @@ public class Style{
         }
     }
     
+    public var paragraphStyle: NSParagraphStyle {
+        get {
+            var paragraphStyle = NSMutableParagraphStyle()
+            
+            if (self.minimumLineHeight != nil){
+                paragraphStyle.minimumLineHeight = self.minimumLineHeight!
+            }
+            
+            if (self.maximumLineHeight != nil){
+                paragraphStyle.maximumLineHeight = self.maximumLineHeight!
+            }
+            
+            paragraphStyle.lineSpacing = self.lineSpacing
+            paragraphStyle.paragraphSpacing = self.paragraphSpacing
+            
+            return paragraphStyle
+        }
+    }
+    
     // MARK: - Primitive getters and setters for the various attributes
     
     /// Family name as a string - if nothing is set, will resolve to the parent's family, or default to Helvetica Neue
@@ -204,6 +223,79 @@ public class Style{
         }
     }
     
+    /// minimumLineHeight sets the explicit line height - this is absolute and will not scale - set to nil if you want to use lineSpacing
+
+    public var minimumLineHeight: CGFloat? {
+        get{
+            if ( _minimumLineHeight != nil ){
+                return _minimumLineHeight!
+            } else if ( parent != nil ) {
+                return parent!.minimumLineHeight
+            } else {
+                return nil
+            }
+        }
+        set {
+            _minimumLineHeight = newValue
+        }
+    }
+    private var _minimumLineHeight: CGFloat?
+    
+    public var maximumLineHeight: CGFloat? {
+        get{
+            if ( _maximumLineHeight != nil ){
+                return _maximumLineHeight!
+            } else if ( parent != nil ) {
+                return parent!.maximumLineHeight
+            } else {
+                return nil
+            }
+        }
+        set {
+            _maximumLineHeight = newValue
+        }
+    }
+    private var _maximumLineHeight: CGFloat?
+    
+    /// Spacing between lines
+    
+    public var lineSpacing: CGFloat {
+        get{
+            if ( _lineSpacing != nil ){
+                return _lineSpacing!
+            } else if ( parent != nil ) {
+                return parent!.lineSpacing
+            } else {
+                return 0
+            }
+        }
+        set {
+            _lineSpacing = newValue
+        }
+    }
+    private var _lineSpacing: CGFloat?
+    
+    /// Spacing between paragraphs
+    
+    public var paragraphSpacing: CGFloat {
+        get{
+            if ( _paragraphSpacing != nil ){
+                return _paragraphSpacing!
+            } else if ( parent != nil ) {
+                return parent!.paragraphSpacing
+            } else {
+                return 0
+            }
+        }
+        set {
+            _paragraphSpacing = newValue
+        }
+    }
+    private var _paragraphSpacing: CGFloat?
+    
+    
+    /// Set to true if the
+    
     public var shouldScale: Bool{
         get{
             if (_shouldScale != nil){
@@ -236,26 +328,49 @@ public class Style{
         
         // Set properties based on what was in the plist fragment
         
-        if let familyName = definition["family"] as? String {
-            self.family=familyName
+        if let val = definition["family"] as? String {
+            self.family=val
         }
         
-        if let faceName = definition["face"] as? String {
-            self.face=faceName
+        if let val = definition["face"] as? String {
+            self.face=val
         }
         
-        if let sizeNum = definition["size"] as? CGFloat {
-            self.size=sizeNum
+        if let val = definition["size"] as? CGFloat {
+            self.size=val
         }
 
-        if let shouldScaleVal = definition["shouldScale"] as? Bool {
-            self.shouldScale=shouldScaleVal
+        if let val = definition["paragraphSpacing"] as? CGFloat {
+            self.paragraphSpacing=val
         }
+        
+        if let val = definition["lineSpacing"] as? CGFloat {
+            self.lineSpacing=val
+        }
+        
+        if let val = definition["minimumLineHeight"] as? CGFloat {
+            self.minimumLineHeight=val
+        }
+        if let val = definition["maximumLineHeight"] as? CGFloat {
+            self.maximumLineHeight=val
+        }
+        
+        if let val = definition["shouldScale"] as? Bool {
+            self.shouldScale=val
+        }
+        
+        
     }
     
 
 
-
+    public func attributedString(text: String)->NSAttributedString{
+        let attributes: [NSObject : AnyObject!] = [ NSFontAttributeName : self.font , NSParagraphStyleAttributeName : self.paragraphStyle ]
+        
+        let attributedString = NSAttributedString(string: text, attributes: attributes)
+        
+        return attributedString
+    }
     
     
     /// Check for whether the parent relationship for this style is cyclical (which would be a bad thing)
@@ -312,7 +427,7 @@ public class Style{
     
     public var style: Style? {
         didSet{
-            self.font=style?.font
+            updateDisplay()
         }
     }
     
@@ -329,6 +444,12 @@ public class Style{
         }
     }
     
+    private func updateDisplay(){
+        if (self.text != nil){
+            let attributedString = style?.attributedString(self.text!)
+            self.attributedText = attributedString
+        }
+    }
 
 }
 

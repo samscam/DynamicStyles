@@ -4,7 +4,7 @@
 * Write a single stylesheet to manage all the typography in your iOS app!
 * WYSIWYG styles in InterfaceBuilder...
 * ... or apply styles in code!
-* ** ONLY COVERS: fonts, weights, and sizes at the moment! **
+* ** COVERS: fonts, weights, sizes, line and paragraph spacing **
 * Optionally uses Apple's DynamicType font scaling for full accessible joy!
 * Written in **Swift** - (now Swift 1.2 and XCode 6.3).
 * Compatible with iOS **8.0+**
@@ -17,7 +17,7 @@
 
 You're best using [CocoaPods](http://cocoapods.org)
 
-Add `pod 'DynamicStyles', '~>0.1.4'` to your podfile.
+Add `pod 'DynamicStyles', '~>0.1.5'` to your podfile.
 
 Run `pod install`
 
@@ -66,6 +66,10 @@ face | string | Regular
 size | number | 17
 shouldScale | boolean | NO | Enables dynamic type scaling (including larger accessibility sizes)
 parent | string | | reference to a parent style name - must not be circular
+paragraphSpacing | number | 0 | the spacing _between_ paragraphs in points
+lineSpacing | number | 0 | the spacing _between_ consecutive lines of text in points
+minimumLineHeight | number | nil
+maximumLineHeight | number | nil
 
 
 _... so an example might look a bit like this_
@@ -83,4 +87,5 @@ _... so an example might look a bit like this_
 		* bodyStyle
 			* shouldScale : true
 			* parent : baseStyle
+			* paragraphSpacing : 5
 
