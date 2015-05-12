@@ -582,19 +582,8 @@ public class Style{
         }
     }
     
-    
-    override public func setTitle(title: String?, forState state: UIControlState) {
-        let attributedTitle = style?.attributedString(title)
-        super.setAttributedTitle(attributedTitle, forState: state)
-    }
-    
     private func updateDisplay(){
-        let state = UIControlState.Normal
-        let title = self.titleForState(state)
-        if ( title != nil){
-            let attributedTitle = style?.attributedString(title)
-            super.setAttributedTitle(attributedTitle, forState: state)
-        }
+        self.titleLabel?.font=style?.font
     }
     
     /// Provides @IBDesignable functionality
