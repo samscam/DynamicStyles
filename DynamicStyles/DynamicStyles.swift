@@ -151,13 +151,16 @@ public class Style{
             paragraphStyle.paragraphSpacing = self.paragraphSpacing
             
             paragraphStyle.paragraphSpacingBefore = self.paragraphSpacingBefore
-            
-            paragraphStyle.alignment = self.alignment
+
+            if (self.alignment != nil){
+                paragraphStyle.alignment = self.alignment!
+            }
             
             return paragraphStyle
         }
     }
     
+
     // MARK: - Primitive getters and setters for the various attributes
     
     /// Family name as a string - if nothing is set, will resolve to the parent's family, or default to Helvetica Neue
@@ -320,14 +323,14 @@ public class Style{
     
     /// Text alignment
     
-    public var alignment: NSTextAlignment {
+    public var alignment: NSTextAlignment? {
         get{
             if ( _alignment != nil ){
                 return _alignment!
             } else if ( parent != nil ) {
                 return parent!.alignment
             } else {
-                return NSTextAlignment.Left
+                return nil
             }
         }
         set {
@@ -437,6 +440,17 @@ public class Style{
         }
     }
     
+    public func attributedString(text: String?, baseParagraphStyle: NSParagraphStyle) -> NSAttributedString? {
+        
+        if (text == nil){
+            return nil
+        }
+        
+        let attributes: [NSObject : AnyObject!] = [ NSFontAttributeName : self.font , NSParagraphStyleAttributeName : self.paragraphStyle ]
+        let attributedString = NSAttributedString(string: text!, attributes: attributes)
+        return attributedString
+        
+    }
     
     /// Check for whether the parent relationship for this style is cyclical (which would be a bad thing)
     public func parentIsCyclical()->Bool{
@@ -522,7 +536,7 @@ public class Style{
         }
     }
     
-    public var gutter: UIEdgeInsets = UIEdgeInsetsMake(2, 2, 2, 2) {
+    public var gutter: UIEdgeInsets = UIEdgeInsetsMake(2, 0, 2, 0) {
         didSet{
             self.setNeedsUpdateConstraints()
         }
@@ -535,14 +549,6 @@ public class Style{
         return superSize
     }
     
-    override public func drawRect(rect: CGRect) {
-        var inRect = rect
-        inRect.origin.x += gutter.left
-        inRect.origin.y += gutter.top
-        inRect.size.height -= (gutter.top+gutter.bottom)
-        inRect.size.width -= (gutter.left+gutter.right)
-        self.attributedText.drawInRect(inRect)
-    }
 
 }
 
