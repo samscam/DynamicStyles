@@ -147,7 +147,11 @@ public class Style{
             }
             
             paragraphStyle.lineSpacing = self.lineSpacing
+            
             paragraphStyle.paragraphSpacing = self.paragraphSpacing
+            
+            paragraphStyle.paragraphSpacingBefore = self.paragraphSpacingBefore
+            
             paragraphStyle.alignment = self.alignment
             
             return paragraphStyle
@@ -314,25 +318,6 @@ public class Style{
     private var _paragraphSpacingBefore: CGFloat?
     
     
-    /// Spacing after paragraphs
-    
-    public var paragraphSpacingAfter: CGFloat {
-        get{
-            if ( _paragraphSpacingAfter != nil ){
-                return _paragraphSpacingAfter!
-            } else if ( parent != nil ) {
-                return parent!.paragraphSpacingAfter
-            } else {
-                return 0
-            }
-        }
-        set {
-            _paragraphSpacingAfter = newValue
-        }
-    }
-    private var _paragraphSpacingAfter: CGFloat?
-    
-    
     /// Text alignment
     
     public var alignment: NSTextAlignment {
@@ -403,10 +388,6 @@ public class Style{
         
         if let val = definition["paragraphSpacingBefore"] as? CGFloat {
             self.paragraphSpacingBefore=val
-        }
-        
-        if let val = definition["paragraphSpacingAfter"] as? CGFloat {
-            self.paragraphSpacingAfter=val
         }
         
         if let val = definition["lineSpacing"] as? CGFloat {
@@ -539,6 +520,28 @@ public class Style{
             let attributedString = style?.attributedString(self.text)
             self.attributedText = attributedString
         }
+    }
+    
+    public var gutter: UIEdgeInsets = UIEdgeInsetsMake(2, 2, 2, 2) {
+        didSet{
+            self.setNeedsUpdateConstraints()
+        }
+    }
+    
+    override public func intrinsicContentSize() -> CGSize {
+        var superSize = super.intrinsicContentSize()
+        superSize.height += gutter.bottom + gutter.top
+        superSize.width += gutter.left + gutter.right
+        return superSize
+    }
+    
+    override public func drawRect(rect: CGRect) {
+        var inRect = rect
+        inRect.origin.x += gutter.left
+        inRect.origin.y += gutter.top
+        inRect.size.height -= (gutter.top+gutter.bottom)
+        inRect.size.width -= (gutter.left+gutter.right)
+        self.attributedText.drawInRect(inRect)
     }
 
 }
