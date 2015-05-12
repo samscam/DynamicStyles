@@ -364,12 +364,14 @@ public class Style{
     
 
 
-    public func attributedString(text: String)->NSAttributedString{
-        let attributes: [NSObject : AnyObject!] = [ NSFontAttributeName : self.font , NSParagraphStyleAttributeName : self.paragraphStyle ]
-        
-        let attributedString = NSAttributedString(string: text, attributes: attributes)
-        
-        return attributedString
+    public func attributedString(text: String?)->NSAttributedString?{
+        if (text != nil){
+            let attributes: [NSObject : AnyObject!] = [ NSFontAttributeName : self.font , NSParagraphStyleAttributeName : self.paragraphStyle ]
+            let attributedString = NSAttributedString(string: text!, attributes: attributes)
+            return attributedString
+        } else {
+            return nil
+        }
     }
     
     
@@ -444,9 +446,15 @@ public class Style{
         }
     }
     
+    override public var text: String?{
+        didSet{
+            updateDisplay()
+        }
+    }
+    
     private func updateDisplay(){
         if (self.text != nil){
-            let attributedString = style?.attributedString(self.text!)
+            let attributedString = style?.attributedString(self.text)
             self.attributedText = attributedString
         }
     }
@@ -479,7 +487,22 @@ public class Style{
     
     public var style: Style? {
         didSet{
-            self.titleLabel?.font=style?.font
+            updateDisplay()
+        }
+    }
+    
+    
+    override public func setTitle(title: String?, forState state: UIControlState) {
+        let attributedTitle = style?.attributedString(title)
+        super.setAttributedTitle(attributedTitle, forState: state)
+    }
+    
+    private func updateDisplay(){
+        let state = UIControlState.Normal
+        let title = self.titleForState(state)
+        if ( title != nil){
+            let attributedTitle = style?.attributedString(title)
+            super.setAttributedTitle(attributedTitle, forState: state)
         }
     }
     
@@ -501,7 +524,7 @@ public class Style{
 // MARK: - NSBundle extension
 
 
-extension NSBundle{
+public extension NSBundle{
     
     /// Returns an NSBundle based on the project's root directory. In the context of Interface Builder, asking for NSBundle.mainBundle() will provide a bundle for internal part of xcode... This instead gives us something from which we can find project-specific resources like the `Stylesheet.plist`
     
