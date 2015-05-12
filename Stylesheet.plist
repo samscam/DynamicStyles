@@ -53,6 +53,8 @@
 		<string>Heavy</string>
 		<key>size</key>
 		<integer>24</integer>
+		<key>alignment</key>
+		<string>center</string>
 	</dict>
 </dict>
 </plist>

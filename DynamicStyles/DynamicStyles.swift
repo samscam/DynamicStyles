@@ -148,6 +148,7 @@ public class Style{
             
             paragraphStyle.lineSpacing = self.lineSpacing
             paragraphStyle.paragraphSpacing = self.paragraphSpacing
+            paragraphStyle.alignment = self.alignment
             
             return paragraphStyle
         }
@@ -294,6 +295,62 @@ public class Style{
     private var _paragraphSpacing: CGFloat?
     
     
+    /// Spacing before paragraphs
+    
+    public var paragraphSpacingBefore: CGFloat {
+        get{
+            if ( _paragraphSpacingBefore != nil ){
+                return _paragraphSpacingBefore!
+            } else if ( parent != nil ) {
+                return parent!.paragraphSpacingBefore
+            } else {
+                return 0
+            }
+        }
+        set {
+            _paragraphSpacingBefore = newValue
+        }
+    }
+    private var _paragraphSpacingBefore: CGFloat?
+    
+    
+    /// Spacing after paragraphs
+    
+    public var paragraphSpacingAfter: CGFloat {
+        get{
+            if ( _paragraphSpacingAfter != nil ){
+                return _paragraphSpacingAfter!
+            } else if ( parent != nil ) {
+                return parent!.paragraphSpacingAfter
+            } else {
+                return 0
+            }
+        }
+        set {
+            _paragraphSpacingAfter = newValue
+        }
+    }
+    private var _paragraphSpacingAfter: CGFloat?
+    
+    
+    /// Text alignment
+    
+    public var alignment: NSTextAlignment {
+        get{
+            if ( _alignment != nil ){
+                return _alignment!
+            } else if ( parent != nil ) {
+                return parent!.alignment
+            } else {
+                return NSTextAlignment.Left
+            }
+        }
+        set {
+            _alignment = newValue
+        }
+    }
+    private var _alignment: NSTextAlignment?
+    
     /// Set to true if the
     
     public var shouldScale: Bool{
@@ -344,8 +401,33 @@ public class Style{
             self.paragraphSpacing=val
         }
         
+        if let val = definition["paragraphSpacingBefore"] as? CGFloat {
+            self.paragraphSpacingBefore=val
+        }
+        
+        if let val = definition["paragraphSpacingAfter"] as? CGFloat {
+            self.paragraphSpacingAfter=val
+        }
+        
         if let val = definition["lineSpacing"] as? CGFloat {
             self.lineSpacing=val
+        }
+        
+        if let val = definition["alignment"] as? String {
+            switch (val){
+            case "left":
+                self.alignment = NSTextAlignment.Left
+            case "center":
+                self.alignment = NSTextAlignment.Center
+            case "right":
+                self.alignment = NSTextAlignment.Right
+            case "justified":
+                self.alignment = NSTextAlignment.Justified
+            case "natural":
+                self.alignment = NSTextAlignment.Natural
+            default:
+                break
+            }
         }
         
         if let val = definition["minimumLineHeight"] as? CGFloat {
