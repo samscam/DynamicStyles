@@ -468,6 +468,23 @@ public class Style{
         return false
     }
     
+    
+    /// Get or set the root style
+    
+    public var rootStyle: Style{
+        get{
+            if (self.parent == nil){
+                return self
+            } else {
+                return self.parent!.rootStyle
+            }
+        }
+        set{
+            if (self.rootStyle !== newValue){
+                self.rootStyle.parent=newValue
+            }
+        }
+    }
 
     /// Calculates a scaled size based on the users's current Dynamic Type settings
     
