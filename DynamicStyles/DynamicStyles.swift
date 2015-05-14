@@ -156,6 +156,8 @@ public class Style{
                 paragraphStyle.alignment = self.alignment!
             }
             
+            paragraphStyle.lineBreakMode = NSLineBreakMode.ByTruncatingTail
+            
             return paragraphStyle
         }
     }
