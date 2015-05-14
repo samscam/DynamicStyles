@@ -530,10 +530,15 @@ public class Style{
     }
     
     private func updateDisplay(){
-        if (self.text != nil){
-            let attributedString = style?.attributedString(self.text)
-            self.attributedText = attributedString
-        }
+        #if !TARGET_INTERFACE_BUILDER
+            if (self.text != nil){
+                let attributedString = style?.attributedString(self.text)
+                self.attributedText = attributedString
+            }
+        #else
+            self.font=self.style?.font
+        #endif
+        
     }
     
     public var gutter: UIEdgeInsets = UIEdgeInsetsMake(2, 0, 2, 0) {
