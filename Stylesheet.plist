@@ -31,6 +31,8 @@
 		<string>typewriter</string>
 		<key>face</key>
 		<string>Bold</string>
+		<key>lineSpacing</key>
+		<integer>3</integer>
 	</dict>
 	<key>caption</key>
 	<dict>
@@ -38,6 +40,10 @@
 		<integer>10</integer>
 		<key>face</key>
 		<string>Italic</string>
+		<key>lineSpacing</key>
+		<integer>3</integer>
+		<key>paragraphSpacing</key>
+		<integer>5</integer>
 	</dict>
 	<key>heading</key>
 	<dict>
@@ -47,6 +53,8 @@
 		<string>Heavy</string>
 		<key>size</key>
 		<integer>24</integer>
+		<key>alignment</key>
+		<string>center</string>
 	</dict>
 </dict>
 </plist>

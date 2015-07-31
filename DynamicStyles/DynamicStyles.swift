@@ -134,6 +134,35 @@ public class Style{
         }
     }
     
+    public var paragraphStyle: NSParagraphStyle {
+        get {
+            var paragraphStyle = NSMutableParagraphStyle()
+            
+            if (self.minimumLineHeight != nil){
+                paragraphStyle.minimumLineHeight = self.minimumLineHeight!
+            }
+            
+            if (self.maximumLineHeight != nil){
+                paragraphStyle.maximumLineHeight = self.maximumLineHeight!
+            }
+            
+            paragraphStyle.lineSpacing = self.lineSpacing
+            
+            paragraphStyle.paragraphSpacing = self.paragraphSpacing
+            
+            paragraphStyle.paragraphSpacingBefore = self.paragraphSpacingBefore
+
+            if (self.alignment != nil){
+                paragraphStyle.alignment = self.alignment!
+            }
+            
+            paragraphStyle.lineBreakMode = NSLineBreakMode.ByTruncatingTail
+            
+            return paragraphStyle
+        }
+    }
+    
+
     // MARK: - Primitive getters and setters for the various attributes
     
     /// Family name as a string - if nothing is set, will resolve to the parent's family, or default to Helvetica Neue
@@ -204,6 +233,116 @@ public class Style{
         }
     }
     
+    /// minimumLineHeight sets the explicit line height - this is absolute and will not scale - set to nil if you want to use lineSpacing
+
+    public var minimumLineHeight: CGFloat? {
+        get{
+            if ( _minimumLineHeight != nil ){
+                return _minimumLineHeight!
+            } else if ( parent != nil ) {
+                return parent!.minimumLineHeight
+            } else {
+                return nil
+            }
+        }
+        set {
+            _minimumLineHeight = newValue
+        }
+    }
+    private var _minimumLineHeight: CGFloat?
+    
+    public var maximumLineHeight: CGFloat? {
+        get{
+            if ( _maximumLineHeight != nil ){
+                return _maximumLineHeight!
+            } else if ( parent != nil ) {
+                return parent!.maximumLineHeight
+            } else {
+                return nil
+            }
+        }
+        set {
+            _maximumLineHeight = newValue
+        }
+    }
+    private var _maximumLineHeight: CGFloat?
+    
+    /// Spacing between lines
+    
+    public var lineSpacing: CGFloat {
+        get{
+            if ( _lineSpacing != nil ){
+                return _lineSpacing!
+            } else if ( parent != nil ) {
+                return parent!.lineSpacing
+            } else {
+                return 0
+            }
+        }
+        set {
+            _lineSpacing = newValue
+        }
+    }
+    private var _lineSpacing: CGFloat?
+    
+    /// Spacing between paragraphs
+    
+    public var paragraphSpacing: CGFloat {
+        get{
+            if ( _paragraphSpacing != nil ){
+                return _paragraphSpacing!
+            } else if ( parent != nil ) {
+                return parent!.paragraphSpacing
+            } else {
+                return 0
+            }
+        }
+        set {
+            _paragraphSpacing = newValue
+        }
+    }
+    private var _paragraphSpacing: CGFloat?
+    
+    
+    /// Spacing before paragraphs
+    
+    public var paragraphSpacingBefore: CGFloat {
+        get{
+            if ( _paragraphSpacingBefore != nil ){
+                return _paragraphSpacingBefore!
+            } else if ( parent != nil ) {
+                return parent!.paragraphSpacingBefore
+            } else {
+                return 0
+            }
+        }
+        set {
+            _paragraphSpacingBefore = newValue
+        }
+    }
+    private var _paragraphSpacingBefore: CGFloat?
+    
+    
+    /// Text alignment
+    
+    public var alignment: NSTextAlignment? {
+        get{
+            if ( _alignment != nil ){
+                return _alignment!
+            } else if ( parent != nil ) {
+                return parent!.alignment
+            } else {
+                return nil
+            }
+        }
+        set {
+            _alignment = newValue
+        }
+    }
+    private var _alignment: NSTextAlignment?
+    
+    /// Set to true if the
+    
     public var shouldScale: Bool{
         get{
             if (_shouldScale != nil){
@@ -236,27 +375,84 @@ public class Style{
         
         // Set properties based on what was in the plist fragment
         
-        if let familyName = definition["family"] as? String {
-            self.family=familyName
+        if let val = definition["family"] as? String {
+            self.family=val
         }
         
-        if let faceName = definition["face"] as? String {
-            self.face=faceName
+        if let val = definition["face"] as? String {
+            self.face=val
         }
         
-        if let sizeNum = definition["size"] as? CGFloat {
-            self.size=sizeNum
+        if let val = definition["size"] as? CGFloat {
+            self.size=val
         }
 
-        if let shouldScaleVal = definition["shouldScale"] as? Bool {
-            self.shouldScale=shouldScaleVal
+        if let val = definition["paragraphSpacing"] as? CGFloat {
+            self.paragraphSpacing=val
         }
+        
+        if let val = definition["paragraphSpacingBefore"] as? CGFloat {
+            self.paragraphSpacingBefore=val
+        }
+        
+        if let val = definition["lineSpacing"] as? CGFloat {
+            self.lineSpacing=val
+        }
+        
+        if let val = definition["alignment"] as? String {
+            switch (val){
+            case "left":
+                self.alignment = NSTextAlignment.Left
+            case "center":
+                self.alignment = NSTextAlignment.Center
+            case "right":
+                self.alignment = NSTextAlignment.Right
+            case "justified":
+                self.alignment = NSTextAlignment.Justified
+            case "natural":
+                self.alignment = NSTextAlignment.Natural
+            default:
+                break
+            }
+        }
+        
+        if let val = definition["minimumLineHeight"] as? CGFloat {
+            self.minimumLineHeight=val
+        }
+        if let val = definition["maximumLineHeight"] as? CGFloat {
+            self.maximumLineHeight=val
+        }
+        
+        if let val = definition["shouldScale"] as? Bool {
+            self.shouldScale=val
+        }
+        
+        
     }
     
 
 
-
+    public func attributedString(text: String?)->NSAttributedString?{
+        if (text != nil){
+            let attributes: [NSObject : AnyObject!] = [ NSFontAttributeName : self.font , NSParagraphStyleAttributeName : self.paragraphStyle ]
+            let attributedString = NSAttributedString(string: text!, attributes: attributes)
+            return attributedString
+        } else {
+            return nil
+        }
+    }
     
+    public func attributedString(text: String?, baseParagraphStyle: NSParagraphStyle) -> NSAttributedString? {
+        
+        if (text == nil){
+            return nil
+        }
+        
+        let attributes: [NSObject : AnyObject!] = [ NSFontAttributeName : self.font , NSParagraphStyleAttributeName : self.paragraphStyle ]
+        let attributedString = NSAttributedString(string: text!, attributes: attributes)
+        return attributedString
+        
+    }
     
     /// Check for whether the parent relationship for this style is cyclical (which would be a bad thing)
     public func parentIsCyclical()->Bool{
@@ -272,6 +468,23 @@ public class Style{
         return false
     }
     
+    
+    /// Get or set the root style
+    
+    public var rootStyle: Style{
+        get{
+            if (self.parent == nil){
+                return self
+            } else {
+                return self.parent!.rootStyle
+            }
+        }
+        set{
+            if (self.rootStyle !== newValue){
+                self.rootStyle.parent=newValue
+            }
+        }
+    }
 
     /// Calculates a scaled size based on the users's current Dynamic Type settings
     
@@ -312,7 +525,7 @@ public class Style{
     
     public var style: Style? {
         didSet{
-            self.font=style?.font
+            updateDisplay()
         }
     }
     
@@ -327,6 +540,37 @@ public class Style{
         if let sn=self.styleName {
             self.style=self.stylesheet?.style(sn as String)
         }
+    }
+    
+    override public var text: String?{
+        didSet{
+            updateDisplay()
+        }
+    }
+    
+    private func updateDisplay(){
+        #if !TARGET_INTERFACE_BUILDER
+            if (self.text != nil){
+                let attributedString = style?.attributedString(self.text)
+                self.attributedText = attributedString
+            }
+        #else
+            self.font=self.style?.font
+        #endif
+        
+    }
+    
+    public var gutter: UIEdgeInsets = UIEdgeInsetsMake(2, 0, 2, 0) {
+        didSet{
+            self.setNeedsUpdateConstraints()
+        }
+    }
+    
+    override public func intrinsicContentSize() -> CGSize {
+        var superSize = super.intrinsicContentSize()
+        superSize.height += gutter.bottom + gutter.top
+        superSize.width += gutter.left + gutter.right
+        return superSize
     }
     
 
@@ -358,8 +602,12 @@ public class Style{
     
     public var style: Style? {
         didSet{
-            self.titleLabel?.font=style?.font
+            updateDisplay()
         }
+    }
+    
+    private func updateDisplay(){
+        self.titleLabel?.font=style?.font
     }
     
     /// Provides @IBDesignable functionality
