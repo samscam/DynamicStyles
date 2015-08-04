@@ -6,8 +6,8 @@
 * ... or apply styles in code!
 * ** COVERS: fonts, weights, sizes, line and paragraph spacing **
 * Optionally uses Apple's DynamicType font scaling for full accessible joy!
-* Written in **Swift** - (now Swift 1.2 and XCode 6.3).
-* Compatible with iOS **8.0+**
+* Written in **Swift**
+* Compatible with iOS **8.x** and **9.x**
 * Contributions welcome!
 * **Currently in rapid development! Expect frequent updates! Expect things to break!**
 
@@ -17,9 +17,13 @@
 
 You're best using [CocoaPods](http://cocoapods.org)
 
-Add `pod 'DynamicStyles', '~>0.1.5'` to your podfile.
+Add `pod 'DynamicStyles', '0.1.6'` to your podfile.
 
 Run `pod install`
+
+### At it with Swift 2.0 ??
+
+There's a branch for that... Add `pod 'DynamicStyles', '0.2.0-beta'` to your podfile instead. It might work...
 
 ### ... and then
 
@@ -35,9 +39,7 @@ You can theoretically tell it to use a custom named plist from code but you won'
 * From the **identity inspector** set the custom class to `DynamicStyleLabel`. The module should update by itself (if it doesn't, make sure it says `DynamicStyles`)
 * In the **attributes inspector** there's a box called `Style Name` – type the name of one of your defined styles in there and watch the label update!
 
-The same goes for buttons. The custom class for them is `DynamicStyleButton`
-
-** NOTE: ** This works fine with Xcode 6.3.1 - well done Apple for fixing the bugs :)
+The same goes for buttons. The custom class for them is `DynamicStyleButton`. Plan is to extend this to other UIView variants sometime.
 
 ### Code
 
