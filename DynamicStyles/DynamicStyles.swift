@@ -401,8 +401,6 @@ public class Style{
         
         if let val = definition["alignment"] as? String {
             switch (val){
-            case "left":
-                self.alignment = NSTextAlignment.Left
             case "center":
                 self.alignment = NSTextAlignment.Center
             case "right":
@@ -412,7 +410,7 @@ public class Style{
             case "natural":
                 self.alignment = NSTextAlignment.Natural
             default:
-                break
+                self.alignment = NSTextAlignment.Left
             }
         }
         

@@ -70,6 +70,7 @@ shouldScale | boolean | NO | Enables dynamic type scaling (including larger acce
 parent | string | | reference to a parent style name - must not be circular
 paragraphSpacing | number | 0 | the spacing _between_ paragraphs in points
 lineSpacing | number | 0 | the spacing _between_ consecutive lines of text in points
+alignment | string | left | can be left, center, right, justified or natural
 minimumLineHeight | number | nil
 maximumLineHeight | number | nil
 
