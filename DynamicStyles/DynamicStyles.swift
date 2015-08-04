@@ -61,14 +61,14 @@ public class Stylesheet{
         }
         
         // Resolve parents
-        for (styleIdentifier, style): (String, Style) in styles{
+        for (_, style): (String, Style) in styles{
             if (style.parentName != nil){
                 style.parent=self.style(style.parentName!)
             }
         }
         
         // Check for cyclicity. This will throw an error at runtime if styles are inbred ;-)
-        for (styleIdentifier, style): (String, Style) in styles{
+        for (_, style): (String, Style) in styles{
             assert(!style.parentIsCyclical(),"Styles must not be cyclical")
         }
     }
@@ -124,17 +124,17 @@ public class Style{
     /// Returns a UIFontDescriptor
     public var fontDescriptor: UIFontDescriptor {
         get{
-            var fontAttributes: [NSObject:AnyObject] = [:]
+            var fontAttributes: [String:AnyObject] = [:]
             
             fontAttributes[UIFontDescriptorSizeAttribute] = scaledSize
             fontAttributes[UIFontDescriptorFamilyAttribute] = family
             fontAttributes[UIFontDescriptorFaceAttribute] = face
-            
+
             return UIFontDescriptor(fontAttributes: fontAttributes)
         }
     }
     
-    public var paragraphStyle: NSParagraphStyle {
+    public var paragraphStyle: NSParagraphStyle? {
         get {
             let paragraphStyle = NSMutableParagraphStyle()
             
@@ -433,26 +433,19 @@ public class Style{
 
 
     public func attributedString(text: String?)->NSAttributedString?{
-        if (text != nil){
-            let attributes: [NSObject : AnyObject!] = [ NSFontAttributeName : self.font , NSParagraphStyleAttributeName : self.paragraphStyle ]
-            let attributedString = NSAttributedString(string: text!, attributes: attributes)
-            return attributedString
+        if let text = text, font = self.font, paragraphStyle = self.paragraphStyle {
+            let attributes: [String : AnyObject] = [ NSFontAttributeName : font , NSParagraphStyleAttributeName : paragraphStyle ]
+            return NSAttributedString(string: text, attributes: attributes)
         } else {
             return nil
         }
     }
     
     public func attributedString(text: String?, baseParagraphStyle: NSParagraphStyle) -> NSAttributedString? {
-        
-        if (text == nil){
-            return nil
-        }
-        
-        let attributes: [NSObject : AnyObject!] = [ NSFontAttributeName : self.font , NSParagraphStyleAttributeName : self.paragraphStyle ]
-        let attributedString = NSAttributedString(string: text!, attributes: attributes)
-        return attributedString
-        
+        // This doesn't seem to have got implemented - will probably throw it out
+        return nil
     }
+    
     
     /// Check for whether the parent relationship for this style is cyclical (which would be a bad thing)
     public func parentIsCyclical()->Bool{
