@@ -24,6 +24,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		227E91CD1B70FEE200CACBBA /* Readme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Readme.md; sourceTree = "<group>"; };
+		227E91CE1B70FF8B00CACBBA /* DynamicStyles.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = DynamicStyles.podspec; sourceTree = "<group>"; };
 		2290B1ED1AC821F700816878 /* DynamicStyles.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DynamicStyles.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2290B1F11AC821F700816878 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2290B1F21AC821F700816878 /* DynamicStyles.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DynamicStyles.h; sourceTree = "<group>"; };
@@ -55,6 +57,8 @@
 		2290B1E31AC821F700816878 = {
 			isa = PBXGroup;
 			children = (
+				227E91CD1B70FEE200CACBBA /* Readme.md */,
+				227E91CE1B70FF8B00CACBBA /* DynamicStyles.podspec */,
 				2290B1EF1AC821F700816878 /* DynamicStyles */,
 				2290B1FC1AC821F700816878 /* DynamicStylesTests */,
 				2290B1EE1AC821F700816878 /* Products */,
