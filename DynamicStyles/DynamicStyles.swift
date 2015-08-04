@@ -55,20 +55,20 @@ public class Stylesheet{
         if let stylesheetDict = NSDictionary(contentsOfFile: stylesheetPath!){
             
             // Iterate through the incoming dict and create style objects for each of the keys
-            for (styleIdentifier: String, styleDict: [String:AnyObject]) in stylesheetDict as! [String:[String:AnyObject]] {
+            for (styleIdentifier, styleDict): (String, [String:AnyObject]) in stylesheetDict as! [String:[String:AnyObject]] {
                 styles[styleIdentifier]=Style(name: styleIdentifier, definition: styleDict)
             }
         }
         
         // Resolve parents
-        for (styleIdentifier: String, style: Style) in styles{
+        for (styleIdentifier, style): (String, Style) in styles{
             if (style.parentName != nil){
                 style.parent=self.style(style.parentName!)
             }
         }
         
         // Check for cyclicity. This will throw an error at runtime if styles are inbred ;-)
-        for (styleIdentifier: String, style: Style) in styles{
+        for (styleIdentifier, style): (String, Style) in styles{
             assert(!style.parentIsCyclical(),"Styles must not be cyclical")
         }
     }
@@ -78,7 +78,7 @@ public class Stylesheet{
     public convenience init?(named stylesheetName: String,
         inBundle bundle: NSBundle?){
             
-            var inBundle = (bundle != nil) ? bundle : NSBundle.mainBundle()
+            let inBundle = (bundle != nil) ? bundle : NSBundle.mainBundle()
             
             let stylesheetPath: String? = inBundle?.pathForResource(stylesheetName, ofType: "plist")
             self.init(path:stylesheetPath)
@@ -136,7 +136,7 @@ public class Style{
     
     public var paragraphStyle: NSParagraphStyle {
         get {
-            var paragraphStyle = NSMutableParagraphStyle()
+            let paragraphStyle = NSMutableParagraphStyle()
             
             if (self.minimumLineHeight != nil){
                 paragraphStyle.minimumLineHeight = self.minimumLineHeight!
@@ -635,7 +635,7 @@ public extension NSBundle{
     public class func projectBundleForInterfaceBuilder() -> NSBundle? {
 
         let processInfo = NSProcessInfo.processInfo()
-        let environment = processInfo.environment as! [String:String]
+        let environment = processInfo.environment 
         let projectSourceDirectories : String = environment["IB_PROJECT_SOURCE_DIRECTORIES"]!
         let directories = projectSourceDirectories.componentsSeparatedByString(":")
         
