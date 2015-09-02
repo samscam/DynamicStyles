@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   s.authors = { 'Sam Easterby-Smith' => 'me@samscam.co.uk' }
   s.source = { :git => 'https://github.com/samscam/DynamicStyles.git', :tag => s.version, :branch => 'Swift-2.0' }
 
-  s.ios.deployment_target = '9.0'
+  s.ios.deployment_target = '8.0'
 
   s.source_files = 'DynamicStyles/*.swift'
 
