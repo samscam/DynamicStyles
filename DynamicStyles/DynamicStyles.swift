@@ -632,15 +632,15 @@ public extension NSBundle{
         let projectSourceDirectories : String = environment["IB_PROJECT_SOURCE_DIRECTORIES"]!
         let directories = projectSourceDirectories.componentsSeparatedByString(":")
         
-        var path = directories[0] as String
-        
+        let path = directories[0] as String
+        var url = NSURL.fileURLWithPath(path)
         // Remove pods from the path components (assuming we are in a cocoapods environment)
-        if (path.lastPathComponent == "Pods"){
-            path=path.stringByDeletingLastPathComponent
+        if (url.lastPathComponent == "Pods"){
+            url=url.URLByDeletingLastPathComponent!
         }
         
         // Create and a bundle based on the project path
-        return NSBundle(path: path)
+        return NSBundle(URL: url)
         
     }
 }
