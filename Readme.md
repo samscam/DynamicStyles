@@ -13,17 +13,23 @@
 
 ## Installation
 
+### Requirements
+
+* XCode 7
+* Swift 2.0
+* iOS 8
+
 ### Cocoapods
 
 You're best using [CocoaPods](http://cocoapods.org)
 
-Add `pod 'DynamicStyles', '0.1.6'` to your podfile.
+Add `pod 'DynamicStyles', '0.2.0'` to your podfile.
 
 Run `pod install`
 
-### At it with Swift 2.0 ??
+### Alternatively
 
-There's a branch for that... Add `pod 'DynamicStyles', '0.2.0-beta'` to your podfile instead. It might work...
+Clone the repository if you want to build the framework manually or play with the example project.
 
 ### ... and then
 
@@ -51,9 +57,6 @@ or in a more verbose way...
 	let headingStyle = stylesheet.style("heading")
 	label.style=headingStyle
 	
-
-
-
 
 ## Stylesheet Syntax
 
