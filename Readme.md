@@ -29,14 +29,14 @@ Run `pod install`
 
 ### Carthage
 
-Yes it should work with Carthage too. Add `github "Samscam/DynamicStyles" ~>0.2` to your Cartfile and build and link the framework as usual.
+It sorta works with Carthage too - BUT things won't render in Interface Builder and you'll have to use User Defined Runtime Attributes to set the styleName for any DynamicStyleLabel or DynamicStyleButton you create. If you still want to use Carthage, add `github "Samscam/DynamicStyles" ~>0.2` to your Cartfile and build and link the framework as usual.
 
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 
 ### Alternatively
 
-Clone the repository if you want to build the framework manually or play with the example project.
+Clone the repository if you want to integrate the framework manually or play with the example project.
 
 ### ... and then
 
