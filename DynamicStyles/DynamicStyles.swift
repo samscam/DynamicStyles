@@ -18,30 +18,10 @@ A `Stylesheet` is a container for a selection of styles loaded from a plist. Cur
 
 public class Stylesheet{
     
+    static public let defaultStylesheet = Stylesheet(named: "Stylesheet")
+    
     public var styles: [String:Style]
     
-    struct Singleton {
-        static var instance: Stylesheet?
-        static var token: dispatch_once_t = 0
-    }
-    
-    /// Loads a shared stylesheet with a given name - not tested!
-    
-    public class func defaultStylesheet(named stylesheetName: String)->Stylesheet{
-        dispatch_once(&Singleton.token) {
-            Singleton.instance = Stylesheet(named: stylesheetName)
-        }
-        return Singleton.instance!
-    }
-    
-    /// Returns the shared stylesheet - by default it looks for one called "Stylesheet.plist" in the main bundle
-    
-    public class var defaultStylesheet: Stylesheet {
-        dispatch_once(&Singleton.token) {
-            Singleton.instance = Stylesheet(named: "Stylesheet")
-        }
-        return Singleton.instance!
-    }
 
     /// Designated initialiser - grabs the named .plist and instantiates all the styles it contains
     
@@ -55,20 +35,20 @@ public class Stylesheet{
         if let stylesheetDict = NSDictionary(contentsOfFile: stylesheetPath!){
             
             // Iterate through the incoming dict and create style objects for each of the keys
-            for (styleIdentifier: String, styleDict: [String:AnyObject]) in stylesheetDict as! [String:[String:AnyObject]] {
+            for (styleIdentifier, styleDict): (String, [String:AnyObject]) in stylesheetDict as! [String:[String:AnyObject]] {
                 styles[styleIdentifier]=Style(name: styleIdentifier, definition: styleDict)
             }
         }
         
         // Resolve parents
-        for (styleIdentifier: String, style: Style) in styles{
+        for (_, style): (String, Style) in styles{
             if (style.parentName != nil){
                 style.parent=self.style(style.parentName!)
             }
         }
         
         // Check for cyclicity. This will throw an error at runtime if styles are inbred ;-)
-        for (styleIdentifier: String, style: Style) in styles{
+        for (_, style): (String, Style) in styles{
             assert(!style.parentIsCyclical(),"Styles must not be cyclical")
         }
     }
@@ -78,7 +58,7 @@ public class Stylesheet{
     public convenience init?(named stylesheetName: String,
         inBundle bundle: NSBundle?){
             
-            var inBundle = (bundle != nil) ? bundle : NSBundle.mainBundle()
+            let inBundle = (bundle != nil) ? bundle : NSBundle.mainBundle()
             
             let stylesheetPath: String? = inBundle?.pathForResource(stylesheetName, ofType: "plist")
             self.init(path:stylesheetPath)
@@ -124,19 +104,19 @@ public class Style{
     /// Returns a UIFontDescriptor
     public var fontDescriptor: UIFontDescriptor {
         get{
-            var fontAttributes: [NSObject:AnyObject] = [:]
+            var fontAttributes: [String:AnyObject] = [:]
             
             fontAttributes[UIFontDescriptorSizeAttribute] = scaledSize
             fontAttributes[UIFontDescriptorFamilyAttribute] = family
             fontAttributes[UIFontDescriptorFaceAttribute] = face
-            
+
             return UIFontDescriptor(fontAttributes: fontAttributes)
         }
     }
     
-    public var paragraphStyle: NSParagraphStyle {
+    public var paragraphStyle: NSParagraphStyle? {
         get {
-            var paragraphStyle = NSMutableParagraphStyle()
+            let paragraphStyle = NSMutableParagraphStyle()
             
             if (self.minimumLineHeight != nil){
                 paragraphStyle.minimumLineHeight = self.minimumLineHeight!
@@ -431,26 +411,19 @@ public class Style{
 
 
     public func attributedString(text: String?)->NSAttributedString?{
-        if (text != nil){
-            let attributes: [NSObject : AnyObject!] = [ NSFontAttributeName : self.font , NSParagraphStyleAttributeName : self.paragraphStyle ]
-            let attributedString = NSAttributedString(string: text!, attributes: attributes)
-            return attributedString
+        if let text = text, font = self.font, paragraphStyle = self.paragraphStyle {
+            let attributes: [String : AnyObject] = [ NSFontAttributeName : font , NSParagraphStyleAttributeName : paragraphStyle ]
+            return NSAttributedString(string: text, attributes: attributes)
         } else {
             return nil
         }
     }
     
     public func attributedString(text: String?, baseParagraphStyle: NSParagraphStyle) -> NSAttributedString? {
-        
-        if (text == nil){
-            return nil
-        }
-        
-        let attributes: [NSObject : AnyObject!] = [ NSFontAttributeName : self.font , NSParagraphStyleAttributeName : self.paragraphStyle ]
-        let attributedString = NSAttributedString(string: text!, attributes: attributes)
-        return attributedString
-        
+        // This doesn't seem to have got implemented - will probably throw it out
+        return nil
     }
+    
     
     /// Check for whether the parent relationship for this style is cyclical (which would be a bad thing)
     public func parentIsCyclical()->Bool{
@@ -633,19 +606,19 @@ public extension NSBundle{
     public class func projectBundleForInterfaceBuilder() -> NSBundle? {
 
         let processInfo = NSProcessInfo.processInfo()
-        let environment = processInfo.environment as! [String:String]
+        let environment = processInfo.environment 
         let projectSourceDirectories : String = environment["IB_PROJECT_SOURCE_DIRECTORIES"]!
         let directories = projectSourceDirectories.componentsSeparatedByString(":")
         
-        var path = directories[0] as String
-        
+        let path = directories[0] as String
+        var url = NSURL.fileURLWithPath(path)
         // Remove pods from the path components (assuming we are in a cocoapods environment)
-        if (path.lastPathComponent == "Pods"){
-            path=path.stringByDeletingLastPathComponent
+        if (url.lastPathComponent == "Pods"){
+            url=url.URLByDeletingLastPathComponent!
         }
         
         // Create and a bundle based on the project path
-        return NSBundle(path: path)
+        return NSBundle(URL: url)
         
     }
 }

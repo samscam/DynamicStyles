@@ -24,8 +24,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		22691D231B71065200B07E6E /* DynamicStyles.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = DynamicStyles.podspec; sourceTree = "<group>"; };
-		22691D241B71066000B07E6E /* Readme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Readme.md; sourceTree = "<group>"; };
+		227E91CD1B70FEE200CACBBA /* Readme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Readme.md; sourceTree = "<group>"; };
+		227E91CE1B70FF8B00CACBBA /* DynamicStyles.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = DynamicStyles.podspec; sourceTree = "<group>"; };
 		2290B1ED1AC821F700816878 /* DynamicStyles.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DynamicStyles.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2290B1F11AC821F700816878 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2290B1F21AC821F700816878 /* DynamicStyles.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DynamicStyles.h; sourceTree = "<group>"; };
@@ -57,8 +57,8 @@
 		2290B1E31AC821F700816878 = {
 			isa = PBXGroup;
 			children = (
-				22691D241B71066000B07E6E /* Readme.md */,
-				22691D231B71065200B07E6E /* DynamicStyles.podspec */,
+				227E91CD1B70FEE200CACBBA /* Readme.md */,
+				227E91CE1B70FF8B00CACBBA /* DynamicStyles.podspec */,
 				2290B1EF1AC821F700816878 /* DynamicStyles */,
 				2290B1FC1AC821F700816878 /* DynamicStylesTests */,
 				2290B1EE1AC821F700816878 /* Products */,
@@ -165,7 +165,9 @@
 		2290B1E41AC821F700816878 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0620;
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Spotlight Kid";
 				TargetAttributes = {
 					2290B1EC1AC821F700816878 = {
@@ -260,6 +262,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -335,6 +338,7 @@
 				INFOPLIST_FILE = DynamicStyles/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks $(CONFIGURATION_BUILD_DIR)";
+				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.spotlightkid.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -352,6 +356,7 @@
 				INFOPLIST_FILE = DynamicStyles/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks $(CONFIGURATION_BUILD_DIR)";
+				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.spotlightkid.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -370,6 +375,7 @@
 				);
 				INFOPLIST_FILE = DynamicStylesTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.spotlightkid.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -383,6 +389,7 @@
 				);
 				INFOPLIST_FILE = DynamicStylesTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.spotlightkid.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
