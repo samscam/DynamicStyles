@@ -18,30 +18,10 @@ A `Stylesheet` is a container for a selection of styles loaded from a plist. Cur
 
 public class Stylesheet{
     
+    static public let defaultStylesheet = Stylesheet(named: "Stylesheet")
+    
     public var styles: [String:Style]
     
-    struct Singleton {
-        static var instance: Stylesheet?
-        static var token: dispatch_once_t = 0
-    }
-    
-    /// Loads a shared stylesheet with a given name - not tested!
-    
-    public class func defaultStylesheet(named stylesheetName: String)->Stylesheet{
-        dispatch_once(&Singleton.token) {
-            Singleton.instance = Stylesheet(named: stylesheetName)
-        }
-        return Singleton.instance!
-    }
-    
-    /// Returns the shared stylesheet - by default it looks for one called "Stylesheet.plist" in the main bundle
-    
-    public class var defaultStylesheet: Stylesheet {
-        dispatch_once(&Singleton.token) {
-            Singleton.instance = Stylesheet(named: "Stylesheet")
-        }
-        return Singleton.instance!
-    }
 
     /// Designated initialiser - grabs the named .plist and instantiates all the styles it contains
     
