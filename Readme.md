@@ -4,7 +4,8 @@
 * Write a single stylesheet to manage all the typography in your iOS app
 * WYSIWYG styles in InterfaceBuilder...
 * ... or apply styles in code
-* **COVERS: fonts, weights, sizes, line and paragraph spacing**
+* Currently covers: **fonts, weights, sizes, line and paragraph spacing**
+* Works with: **UILabel and UIButton** (more to come there)
 * Optionally uses Apple's DynamicType font scaling for full accessible joy
 * Written in **Swift**
 * Compatible with iOS **8.x** and **9.x**
@@ -20,11 +21,18 @@
 
 ### Cocoapods
 
-You're best using [CocoaPods](http://cocoapods.org)
+You're probably best using [CocoaPods](http://cocoapods.org)
 
-Add `pod 'DynamicStyles', '0.2.0'` to your podfile.
+Add `pod 'DynamicStyles', '~>0.2'` to your podfile.
 
 Run `pod install`
+
+### Carthage
+
+Yes it should work with Carthage too. Add `github "Samscam/DynamicStyles" ~>0.2` to your Cartfile and build and link the framework as usual.
+
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+
 
 ### Alternatively
 
