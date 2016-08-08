@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9058" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9048"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -20,8 +20,7 @@
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oQf-mK-MuR" customClass="DynamicStyleButton" customModule="DynamicStyles">
                                 <rect key="frame" x="20" y="40" width="560" height="78"/>
-                                <animations/>
-                                <state key="normal" title="Look! A Button!">
+                                <state key="normal" title="DynamicStyles">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
@@ -30,7 +29,6 @@
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="190" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="f8Y-Cy-CBf">
                                 <rect key="frame" x="0.0" y="128" width="600" height="472"/>
-                                <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SampleCell" rowHeight="190" id="SVI-Hb-uP5" customClass="SampleCell" customModule="DynamicStylesExample" customModuleProvider="target">
@@ -41,8 +39,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="1000" text="Style description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CBM-JS-Agp" customClass="DynamicStyleLabel" customModule="DynamicStyles">
-                                                    <rect key="frame" x="8" y="8" width="584" height="16"/>
-                                                    <animations/>
+                                                    <rect key="frame" x="8" y="8" width="584" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -50,21 +47,17 @@
                                                         <userDefinedRuntimeAttribute type="string" keyPath="styleName" value="list-heading"/>
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="253" verticalCompressionResistancePriority="1000" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aMd-Bt-YYp" customClass="DynamicStyleLabel" customModule="DynamicStyles">
-                                                    <rect key="frame" x="8" y="29" width="584" height="78"/>
-                                                    <animations/>
-                                                    <string key="text">This is a sample bit of text. The quick brown fox jumps over the lazy dog. The fox is in a box.
-And here is another paragraph.
-And another.</string>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="253" verticalCompressionResistancePriority="1000" misplaced="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aMd-Bt-YYp" customClass="DynamicStyleLabel" customModule="DynamicStyles">
+                                                    <rect key="frame" x="8" y="31" width="584" height="150"/>
+                                                    <mutableString key="text">Curabitur blandit tempus porttitor. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit. Etiam porta sem malesuada magna mollis euismod.Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Vestibulum id ligula porta felis euismod semper. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Donec id elit non mi porta gravida at eget metus. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Nulla vitae elit libero, a pharetra augue. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.</mutableString>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="styleName" value="typewriter"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="styleName" value="normal"/>
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstItem="aMd-Bt-YYp" firstAttribute="leading" secondItem="Dl6-US-LhC" secondAttribute="leadingMargin" id="5r1-Wb-Tuq"/>
                                                 <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="aMd-Bt-YYp" secondAttribute="bottom" id="Nah-Z2-XEc"/>
@@ -75,7 +68,6 @@ And another.</string>
                                                 <constraint firstItem="aMd-Bt-YYp" firstAttribute="top" secondItem="CBM-JS-Agp" secondAttribute="bottom" constant="5" id="no1-nN-xUb"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <animations/>
                                         <connections>
                                             <outlet property="sampleLabel" destination="aMd-Bt-YYp" id="dN4-rF-xMn"/>
                                             <outlet property="styleDescriptionLabel" destination="CBM-JS-Agp" id="jgR-ie-BXM"/>
@@ -88,7 +80,6 @@ And another.</string>
                                 </connections>
                             </tableView>
                         </subviews>
-                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="f8Y-Cy-CBf" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="0t9-iC-Q3d"/>

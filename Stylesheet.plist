@@ -2,8 +2,30 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>normal</key>
+	<dict>
+		<key>family</key>
+		<string>Avenir Next</string>
+		<key>size</key>
+		<integer>12</integer>
+		<key>face</key>
+		<string>Regular</string>
+	</dict>
+	<key>heading</key>
+	<dict>
+		<key>parent</key>
+		<string>normal</string>
+		<key>face</key>
+		<string>Heavy</string>
+		<key>size</key>
+		<integer>24</integer>
+		<key>alignment</key>
+		<string>center</string>
+	</dict>
 	<key>list-heading</key>
 	<dict>
+		<key>parent</key>
+		<string>normal</string>
 		<key>size</key>
 		<integer>10</integer>
 		<key>face</key>
@@ -17,6 +39,19 @@
 		<integer>48</integer>
 		<key>face</key>
 		<string>Ultra Light</string>
+	</dict>
+	<key>caption</key>
+	<dict>
+		<key>parent</key>
+		<string>normal</string>
+		<key>size</key>
+		<integer>10</integer>
+		<key>face</key>
+		<string>Italic</string>
+		<key>lineSpacing</key>
+		<integer>3</integer>
+		<key>paragraphSpacing</key>
+		<integer>5</integer>
 	</dict>
 	<key>typewriter</key>
 	<dict>
@@ -33,28 +68,6 @@
 		<string>Bold</string>
 		<key>lineSpacing</key>
 		<integer>3</integer>
-	</dict>
-	<key>caption</key>
-	<dict>
-		<key>size</key>
-		<integer>10</integer>
-		<key>face</key>
-		<string>Italic</string>
-		<key>lineSpacing</key>
-		<integer>3</integer>
-		<key>paragraphSpacing</key>
-		<integer>5</integer>
-	</dict>
-	<key>heading</key>
-	<dict>
-		<key>family</key>
-		<string>Avenir Next</string>
-		<key>face</key>
-		<string>Heavy</string>
-		<key>size</key>
-		<integer>24</integer>
-		<key>alignment</key>
-		<string>center</string>
 	</dict>
 </dict>
 </plist>

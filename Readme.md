@@ -15,11 +15,11 @@
 
 ### Requirements
 
-* XCode 7
+* Xcode 7
 * Swift 2.0
 * iOS 8
 
-### Cocoapods
+### CocoaPods
 
 You're probably best using [CocoaPods](http://cocoapods.org)
 
