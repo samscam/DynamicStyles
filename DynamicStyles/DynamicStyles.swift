@@ -20,19 +20,15 @@ public class Stylesheet{
     
     static public let defaultStylesheet = Stylesheet(named: "Stylesheet")
     
-    public var styles: [String:Style]
+    public var styles: [String:Style] = [:]
+
     
 
     /// Designated initialiser - grabs the named .plist and instantiates all the styles it contains
     
-    public init?(path stylesheetPath: String?){
-        styles=[:]
+    public init?(path stylesheetPath: String){
         
-        if (stylesheetPath == nil){
-            return
-        }
-
-        if let stylesheetDict = NSDictionary(contentsOfFile: stylesheetPath!){
+        if let stylesheetDict = NSDictionary(contentsOfFile: stylesheetPath){
             
             // Iterate through the incoming dict and create style objects for each of the keys
             for (styleIdentifier, styleDict): (String, [String:AnyObject]) in stylesheetDict as! [String:[String:AnyObject]] {
@@ -58,11 +54,12 @@ public class Stylesheet{
     public convenience init?(named stylesheetName: String,
         inBundle bundle: NSBundle?){
             
-            let inBundle = (bundle != nil) ? bundle : NSBundle.mainBundle()
-            
-            let stylesheetPath: String? = inBundle?.pathForResource(stylesheetName, ofType: "plist")
+        if let inBundle = (bundle != nil) ? bundle : NSBundle.mainBundle(),
+            stylesheetPath: String = inBundle.pathForResource(stylesheetName, ofType: "plist") {
             self.init(path:stylesheetPath)
-            
+        } else {
+            return nil
+        }
     }
     
     public convenience init?(named name: String){
