@@ -8,7 +8,7 @@
 * Works with: **UILabel and UIButton** (more to come there)
 * Optionally uses Apple's DynamicType font scaling for full accessible joy
 * Written in **Swift**
-* Compatible with iOS **8.x** and **9.x**
+* Compatible with iOS **> 8.0**
 * Contributions welcome
 
 ## Installation
