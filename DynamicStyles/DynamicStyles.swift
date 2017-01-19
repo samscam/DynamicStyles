@@ -16,11 +16,11 @@ import UIKit
 A `Stylesheet` is a container for a selection of styles loaded from a plist. Currently this only properly supports the default `Stylesheet.plist` which should be located somewhere in your project.
 */
 
-public class Stylesheet{
+open class Stylesheet{
     
-    static public let defaultStylesheet = Stylesheet(named: "Stylesheet")
+    static open let defaultStylesheet = Stylesheet(named: "Stylesheet")
     
-    public var styles: [String:Style] = [:]
+    open var styles: [String:Style] = [:]
 
     
 
@@ -52,10 +52,10 @@ public class Stylesheet{
     // Convenience initialisers
     
     public convenience init?(named stylesheetName: String,
-        inBundle bundle: NSBundle?){
+        inBundle bundle: Bundle?){
             
-        if let inBundle = (bundle != nil) ? bundle : NSBundle.mainBundle(),
-            stylesheetPath: String = inBundle.pathForResource(stylesheetName, ofType: "plist") {
+        if let inBundle = (bundle != nil) ? bundle : Bundle.main,
+            let stylesheetPath: String = inBundle.path(forResource: stylesheetName, ofType: "plist") {
             self.init(path:stylesheetPath)
         } else {
             return nil
@@ -66,7 +66,7 @@ public class Stylesheet{
         self.init(named: name, inBundle: nil)
     }
     
-    public func style(name: String)->Style?{
+    open func style(_ name: String)->Style?{
         return styles[name]
     }
     
@@ -76,20 +76,20 @@ public class Stylesheet{
     `Style` is the main model object for styles!
 */
 
-public class Style{
+open class Style{
     
     
     /// The name of the style
-    public var name: String
+    open var name: String
     
     /// The name of the parent style - used internally to resolve the hierarchy
-    private var parentName: String?
+    fileprivate var parentName: String?
     
     /// The parent style object - populated by the stylesheet after creation. Properties of the parent will be reflected unless overriden by the child...
-    public var parent: Style?
+    open var parent: Style?
 
     /// UIFont object based on this style
-    public var font: UIFont? {
+    open var font: UIFont? {
         get{
             let fontDescriptor = self.fontDescriptor
             let size=fontDescriptor.pointSize
@@ -99,19 +99,19 @@ public class Style{
     
     
     /// Returns a UIFontDescriptor
-    public var fontDescriptor: UIFontDescriptor {
+    open var fontDescriptor: UIFontDescriptor {
         get{
             var fontAttributes: [String:AnyObject] = [:]
             
-            fontAttributes[UIFontDescriptorSizeAttribute] = scaledSize
-            fontAttributes[UIFontDescriptorFamilyAttribute] = family
-            fontAttributes[UIFontDescriptorFaceAttribute] = face
+            fontAttributes[UIFontDescriptorSizeAttribute] = scaledSize as AnyObject?
+            fontAttributes[UIFontDescriptorFamilyAttribute] = family as AnyObject?
+            fontAttributes[UIFontDescriptorFaceAttribute] = face as AnyObject?
 
             return UIFontDescriptor(fontAttributes: fontAttributes)
         }
     }
     
-    public var paragraphStyle: NSParagraphStyle? {
+    open var paragraphStyle: NSParagraphStyle? {
         get {
             let paragraphStyle = NSMutableParagraphStyle()
             
@@ -133,7 +133,7 @@ public class Style{
                 paragraphStyle.alignment = self.alignment!
             }
             
-            paragraphStyle.lineBreakMode = NSLineBreakMode.ByTruncatingTail
+            paragraphStyle.lineBreakMode = NSLineBreakMode.byTruncatingTail
             
             return paragraphStyle
         }
@@ -143,7 +143,7 @@ public class Style{
     // MARK: - Primitive getters and setters for the various attributes
     
     /// Family name as a string - if nothing is set, will resolve to the parent's family, or default to Helvetica Neue
-    public var family: String?{
+    open var family: String?{
         get{
             if ( _family != nil ){
                 return _family
@@ -159,11 +159,11 @@ public class Style{
     }
     
     /// Private variable to back family name
-    private var _family: String?
+    fileprivate var _family: String?
     
     
     /// Face as a string
-    public var face: String{
+    open var face: String{
         get{
             if ( _face != nil ){
                 return _face!
@@ -179,10 +179,10 @@ public class Style{
     }
     
     /// Private variable to back face name
-    private var _face: String?
+    fileprivate var _face: String?
     
     /// RAW size of the font (prior to any dynamic scaling)
-    public var size: CGFloat{
+    open var size: CGFloat{
         get{
             if ( _size != nil ){
                 return _size!
@@ -197,10 +197,10 @@ public class Style{
         }
     }
     
-    private var _size: CGFloat?
+    fileprivate var _size: CGFloat?
     
     /// The scaled size, obeying whether scaling is enabled for this style
-    public var scaledSize: CGFloat {
+    open var scaledSize: CGFloat {
         get{
             if (self.shouldScale){
                 return scaleSize(self.size)
@@ -212,7 +212,7 @@ public class Style{
     
     /// minimumLineHeight sets the explicit line height - this is absolute and will not scale - set to nil if you want to use lineSpacing
 
-    public var minimumLineHeight: CGFloat? {
+    open var minimumLineHeight: CGFloat? {
         get{
             if ( _minimumLineHeight != nil ){
                 return _minimumLineHeight!
@@ -226,9 +226,9 @@ public class Style{
             _minimumLineHeight = newValue
         }
     }
-    private var _minimumLineHeight: CGFloat?
+    fileprivate var _minimumLineHeight: CGFloat?
     
-    public var maximumLineHeight: CGFloat? {
+    open var maximumLineHeight: CGFloat? {
         get{
             if ( _maximumLineHeight != nil ){
                 return _maximumLineHeight!
@@ -242,11 +242,11 @@ public class Style{
             _maximumLineHeight = newValue
         }
     }
-    private var _maximumLineHeight: CGFloat?
+    fileprivate var _maximumLineHeight: CGFloat?
     
     /// Spacing between lines
     
-    public var lineSpacing: CGFloat {
+    open var lineSpacing: CGFloat {
         get{
             if ( _lineSpacing != nil ){
                 return _lineSpacing!
@@ -260,11 +260,11 @@ public class Style{
             _lineSpacing = newValue
         }
     }
-    private var _lineSpacing: CGFloat?
+    fileprivate var _lineSpacing: CGFloat?
     
     /// Spacing between paragraphs
     
-    public var paragraphSpacing: CGFloat {
+    open var paragraphSpacing: CGFloat {
         get{
             if ( _paragraphSpacing != nil ){
                 return _paragraphSpacing!
@@ -278,12 +278,12 @@ public class Style{
             _paragraphSpacing = newValue
         }
     }
-    private var _paragraphSpacing: CGFloat?
+    fileprivate var _paragraphSpacing: CGFloat?
     
     
     /// Spacing before paragraphs
     
-    public var paragraphSpacingBefore: CGFloat {
+    open var paragraphSpacingBefore: CGFloat {
         get{
             if ( _paragraphSpacingBefore != nil ){
                 return _paragraphSpacingBefore!
@@ -297,12 +297,12 @@ public class Style{
             _paragraphSpacingBefore = newValue
         }
     }
-    private var _paragraphSpacingBefore: CGFloat?
+    fileprivate var _paragraphSpacingBefore: CGFloat?
     
     
     /// Text alignment
     
-    public var alignment: NSTextAlignment? {
+    open var alignment: NSTextAlignment? {
         get{
             if ( _alignment != nil ){
                 return _alignment!
@@ -316,11 +316,11 @@ public class Style{
             _alignment = newValue
         }
     }
-    private var _alignment: NSTextAlignment?
+    fileprivate var _alignment: NSTextAlignment?
     
     /// Set to true if the
     
-    public var shouldScale: Bool{
+    open var shouldScale: Bool{
         get{
             if (_shouldScale != nil){
                 return _shouldScale!
@@ -335,7 +335,7 @@ public class Style{
         }
     }
     
-    private var _shouldScale: Bool?
+    fileprivate var _shouldScale: Bool?
     
     ///
     
@@ -379,15 +379,15 @@ public class Style{
         if let val = definition["alignment"] as? String {
             switch (val){
             case "center":
-                self.alignment = NSTextAlignment.Center
+                self.alignment = NSTextAlignment.center
             case "right":
-                self.alignment = NSTextAlignment.Right
+                self.alignment = NSTextAlignment.right
             case "justified":
-                self.alignment = NSTextAlignment.Justified
+                self.alignment = NSTextAlignment.justified
             case "natural":
-                self.alignment = NSTextAlignment.Natural
+                self.alignment = NSTextAlignment.natural
             default:
-                self.alignment = NSTextAlignment.Left
+                self.alignment = NSTextAlignment.left
             }
         }
         
@@ -407,8 +407,8 @@ public class Style{
     
 
 
-    public func attributedString(text: String?)->NSAttributedString?{
-        if let text = text, font = self.font, paragraphStyle = self.paragraphStyle {
+    open func attributedString(_ text: String?)->NSAttributedString?{
+        if let text = text, let font = self.font, let paragraphStyle = self.paragraphStyle {
             let attributes: [String : AnyObject] = [ NSFontAttributeName : font , NSParagraphStyleAttributeName : paragraphStyle ]
             return NSAttributedString(string: text, attributes: attributes)
         } else {
@@ -416,14 +416,14 @@ public class Style{
         }
     }
     
-    public func attributedString(text: String?, baseParagraphStyle: NSParagraphStyle) -> NSAttributedString? {
+    open func attributedString(_ text: String?, baseParagraphStyle: NSParagraphStyle) -> NSAttributedString? {
         // This doesn't seem to have got implemented - will probably throw it out
         return nil
     }
     
     
     /// Check for whether the parent relationship for this style is cyclical (which would be a bad thing)
-    public func parentIsCyclical()->Bool{
+    open func parentIsCyclical()->Bool{
 
         var thisParent: Style? = self.parent
         while (thisParent != nil){
@@ -439,7 +439,7 @@ public class Style{
     
     /// Get or set the root style
     
-    public var rootStyle: Style{
+    open var rootStyle: Style{
         get{
             if (self.parent == nil){
                 return self
@@ -456,8 +456,8 @@ public class Style{
 
     /// Calculates a scaled size based on the users's current Dynamic Type settings
     
-    private func scaleSize(targetSize: CGFloat)->CGFloat{
-        let systemFontDescriptor = UIFontDescriptor.preferredFontDescriptorWithTextStyle(UIFontTextStyleBody)
+    fileprivate func scaleSize(_ targetSize: CGFloat)->CGFloat{
+        let systemFontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyle.body)
         let systemPointSize: CGFloat = systemFontDescriptor.pointSize
         let size = (systemPointSize/17) * targetSize
         return size
@@ -471,7 +471,7 @@ public class Style{
     `DynamicStyleLabel` is a UILabel subclass which supports styling
 */
 
-@IBDesignable public class DynamicStyleLabel: UILabel{
+@IBDesignable open class DynamicStyleLabel: UILabel{
     
     /// The active stylesheet (defaults to the default one)
     
@@ -479,7 +479,7 @@ public class Style{
     
     /// The *name* of the style to be applied. Setting this (in code or from Interface Builder) will cause the style with said name from the active stylesheet to be applied to the label.
     
-    @IBInspectable public var styleName: NSString? {
+    @IBInspectable open var styleName: NSString? {
         didSet{
             if (styleName != nil) {
                 style=stylesheet?.style(styleName! as String)
@@ -491,7 +491,7 @@ public class Style{
     
     /// The *style* - setting this sets the font of the label to match the font defined by the style
     
-    public var style: Style? {
+    open var style: Style? {
         didSet{
             updateDisplay()
         }
@@ -499,9 +499,9 @@ public class Style{
     
     /// Provides @IBDesignable functionality
     
-    override public func prepareForInterfaceBuilder() {
+    override open func prepareForInterfaceBuilder() {
         
-        let bundle = NSBundle.projectBundleForInterfaceBuilder()
+        let bundle = Bundle.projectBundleForInterfaceBuilder()
         self.stylesheet=Stylesheet(named: "Stylesheet", inBundle: bundle)
 
         // Force the style to be updated
@@ -510,13 +510,13 @@ public class Style{
         }
     }
     
-    override public var text: String?{
+    override open var text: String?{
         didSet{
             updateDisplay()
         }
     }
     
-    private func updateDisplay(){
+    fileprivate func updateDisplay(){
         #if !TARGET_INTERFACE_BUILDER
             if (self.text != nil){
                 let attributedString = style?.attributedString(self.text)
@@ -528,14 +528,14 @@ public class Style{
         
     }
     
-    public var gutter: UIEdgeInsets = UIEdgeInsetsMake(2, 0, 2, 0) {
+    open var gutter: UIEdgeInsets = UIEdgeInsetsMake(2, 0, 2, 0) {
         didSet{
             self.setNeedsUpdateConstraints()
         }
     }
     
-    override public func intrinsicContentSize() -> CGSize {
-        var superSize = super.intrinsicContentSize()
+    override open var intrinsicContentSize : CGSize {
+        var superSize = super.intrinsicContentSize
         superSize.height += gutter.bottom + gutter.top
         superSize.width += gutter.left + gutter.right
         return superSize
@@ -548,7 +548,7 @@ public class Style{
 `DynamicStyleButton` is a UIButton subclass which supports styling
 */
 
-@IBDesignable public class DynamicStyleButton: UIButton{
+@IBDesignable open class DynamicStyleButton: UIButton{
     
     /// The active stylesheet (defaults to the default one).
     
@@ -556,7 +556,7 @@ public class Style{
     
     /// The *name* of the style to be applied. Setting this (in code or from Interface Builder) will cause the style with said name from the active stylesheet to be applied to the label.
     
-    @IBInspectable public var styleName: NSString? {
+    @IBInspectable open var styleName: NSString? {
         didSet{
             if (styleName != nil) {
                 style=stylesheet?.style(styleName! as String)
@@ -568,21 +568,21 @@ public class Style{
     
     /// The *style* - setting this sets the font of the label to match the font defined by the style
     
-    public var style: Style? {
+    open var style: Style? {
         didSet{
             updateDisplay()
         }
     }
     
-    private func updateDisplay(){
+    fileprivate func updateDisplay(){
         self.titleLabel?.font=style?.font
     }
     
     /// Provides @IBDesignable functionality
     
-    override public func prepareForInterfaceBuilder() {
+    override open func prepareForInterfaceBuilder() {
         
-        let bundle = NSBundle.projectBundleForInterfaceBuilder()
+        let bundle = Bundle.projectBundleForInterfaceBuilder()
         self.stylesheet=Stylesheet(named: "Stylesheet", inBundle: bundle)
         
         // Force the style to be updated
@@ -596,26 +596,26 @@ public class Style{
 // MARK: - NSBundle extension
 
 
-public extension NSBundle{
+public extension Bundle{
     
-    /// Returns an NSBundle based on the project's root directory. In the context of Interface Builder, asking for NSBundle.mainBundle() will provide a bundle for internal part of xcode... This instead gives us something from which we can find project-specific resources like the `Stylesheet.plist`
+    /// Returns an NSBundle based on the project's root directory. In the context of Interface Builder, asking for NSBundle.mainBundle() will provide a bundle for some internal part of XCode. This instead gives us something from which we can find project-specific resources like the `Stylesheet.plist`
     
-    public class func projectBundleForInterfaceBuilder() -> NSBundle? {
+    public class func projectBundleForInterfaceBuilder() -> Bundle? {
 
-        let processInfo = NSProcessInfo.processInfo()
+        let processInfo = ProcessInfo.processInfo
         let environment = processInfo.environment 
         let projectSourceDirectories : String = environment["IB_PROJECT_SOURCE_DIRECTORIES"]!
-        let directories = projectSourceDirectories.componentsSeparatedByString(":")
+        let directories = projectSourceDirectories.components(separatedBy: ":")
         
         let path = directories[0] as String
-        var url = NSURL.fileURLWithPath(path)
+        var url = URL(fileURLWithPath: path)
         // Remove pods from the path components (assuming we are in a cocoapods environment)
         if (url.lastPathComponent == "Pods"){
-            url=url.URLByDeletingLastPathComponent!
+            url=url.deletingLastPathComponent()
         }
         
         // Create and a bundle based on the project path
-        return NSBundle(URL: url)
+        return Bundle(url: url)
         
     }
 }

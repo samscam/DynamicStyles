@@ -1,0 +1,4 @@
+language: objective-c
+osx_image: xcode7
+xcode_workspace: DynamicStyles.xcworkspace # path to your xcodeproj folder
+xcode_scheme: DynamicStylesTests
