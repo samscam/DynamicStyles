@@ -101,11 +101,11 @@ open class Style{
     /// Returns a UIFontDescriptor
     open var fontDescriptor: UIFontDescriptor {
         get{
-            var fontAttributes: [String:AnyObject] = [:]
+            var fontAttributes: [UIFontDescriptor.AttributeName: Any] = [:]
             
-            fontAttributes[UIFontDescriptorSizeAttribute] = scaledSize as AnyObject?
-            fontAttributes[UIFontDescriptorFamilyAttribute] = family as AnyObject?
-            fontAttributes[UIFontDescriptorFaceAttribute] = face as AnyObject?
+            fontAttributes[.size] = scaledSize
+            fontAttributes[.family] = family
+            fontAttributes[.face] = face
 
             return UIFontDescriptor(fontAttributes: fontAttributes)
         }
@@ -409,7 +409,7 @@ open class Style{
 
     open func attributedString(_ text: String?)->NSAttributedString?{
         if let text = text, let font = self.font, let paragraphStyle = self.paragraphStyle {
-            let attributes: [String : AnyObject] = [ NSFontAttributeName : font , NSParagraphStyleAttributeName : paragraphStyle ]
+            let attributes: [NSAttributedStringKey : Any] = [ .font : font , .paragraphStyle : paragraphStyle ]
             return NSAttributedString(string: text, attributes: attributes)
         } else {
             return nil
