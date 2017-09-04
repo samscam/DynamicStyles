@@ -15,7 +15,8 @@ import UIKit
  `DynamicStyleLabel` is a UILabel subclass which supports styling
  */
 
-@IBDesignable open class DynamicStyleLabel: UILabel{
+@IBDesignable
+public class DynamicStyleLabel: UILabel{
     
     /// The active stylesheet (defaults to the default one)
     
@@ -86,5 +87,15 @@ import UIKit
         return superSize
     }
     
+    // Catch size changes on-the-fly (only works for iOS 10+)
+    override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+
+        if #available(iOS 10.0, *) {
+            if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+                // content size has changed
+                self.updateDisplay()
+            }
+        }
+    }
     
 }
