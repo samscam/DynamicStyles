@@ -33,15 +33,19 @@ open class Stylesheet{
         }
         
         // Resolve parents
-        for (_, style): (String, Style) in styles{
-            if (style.parentName != nil){
-                style.parent=self.style(style.parentName!)
+        styles.forEach { (_, style) in
+            if let parentName = style.parentName {
+                style.parent=self.style(parentName)
             }
         }
         
-        // Check for cyclicity. This will throw an error at runtime if styles are inbred ;-)
-        for (_, style): (String, Style) in styles{
-            assert(!style.parentIsCyclical(),"Styles must not be cyclical")
+        // Sanity checks
+        styles.forEach { (_, style) in
+            // Check for cyclicity. This will throw an error at runtime if styles are inbred ;-)
+            assert(!style.parentIsCyclical,"Styles must not be cyclical")
+            
+            // Check that styles resolve to real fonts
+            _ = style.resolvedFontExists
         }
     }
     

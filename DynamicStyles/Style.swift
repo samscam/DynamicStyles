@@ -39,15 +39,8 @@ open class Style{
     /// Returns a UIFontDescriptor
     open var fontDescriptor: UIFontDescriptor {
         get{
-            var fontDescriptor: UIFontDescriptor
+            
             var fontAttributes: [UIFontDescriptor.AttributeName: Any] = [:]
-            
-            if let family = family {
-                fontDescriptor = UIFontDescriptor(name: family, size: size)
-            } else  {
-                fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
-            }
-            
             
             fontAttributes[.size] = size
             
@@ -55,10 +48,20 @@ open class Style{
                 fontAttributes[.face] = face
             }
             
-            return fontDescriptor.addingAttributes(fontAttributes)
-                
+            if let weight = weight {
+                fontAttributes[.traits] = [UIFontDescriptor.TraitKey.weight: weight]
+            }
             
-//
+            if let family = family {
+                fontAttributes[.family] = family
+            } else  {
+                return UIFont.systemFont(ofSize: size, weight: weight ?? UIFont.Weight.regular).fontDescriptor
+//                return UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body).addingAttributes(fontAttributes)
+            }
+            let fontDescriptor = UIFontDescriptor(fontAttributes: fontAttributes)
+            
+            return fontDescriptor
+
         }
     }
     
@@ -117,6 +120,13 @@ open class Style{
         }
     }
     
+    private var _weight: UIFont.Weight?
+    var weight: UIFont.Weight? {
+        get { return _weight ?? parent?.weight ?? .regular }
+        set { _weight = newValue }
+    }
+    
+    
     /// Private variable to back face name
     fileprivate var _face: String?
     
@@ -147,13 +157,7 @@ open class Style{
     
     open var minimumLineHeight: CGFloat? {
         get{
-            if ( _minimumLineHeight != nil ){
-                return _minimumLineHeight!
-            } else if ( parent != nil ) {
-                return parent!.minimumLineHeight
-            } else {
-                return nil
-            }
+            return _minimumLineHeight ?? parent?.minimumLineHeight
         }
         set {
             _minimumLineHeight = newValue
@@ -163,13 +167,7 @@ open class Style{
     
     open var maximumLineHeight: CGFloat? {
         get{
-            if ( _maximumLineHeight != nil ){
-                return _maximumLineHeight!
-            } else if ( parent != nil ) {
-                return parent!.maximumLineHeight
-            } else {
-                return nil
-            }
+            return _maximumLineHeight ?? parent?.maximumLineHeight
         }
         set {
             _maximumLineHeight = newValue
@@ -181,13 +179,7 @@ open class Style{
     
     open var lineSpacing: CGFloat {
         get{
-            if ( _lineSpacing != nil ){
-                return _lineSpacing!
-            } else if ( parent != nil ) {
-                return parent!.lineSpacing
-            } else {
-                return 0
-            }
+            return _lineSpacing ?? parent?.lineSpacing ?? 0
         }
         set {
             _lineSpacing = newValue
@@ -199,13 +191,7 @@ open class Style{
     
     open var paragraphSpacing: CGFloat {
         get{
-            if ( _paragraphSpacing != nil ){
-                return _paragraphSpacing!
-            } else if ( parent != nil ) {
-                return parent!.paragraphSpacing
-            } else {
-                return 0
-            }
+            return _paragraphSpacing ?? parent?.paragraphSpacing ?? 0
         }
         set {
             _paragraphSpacing = newValue
@@ -218,13 +204,7 @@ open class Style{
     
     open var paragraphSpacingBefore: CGFloat {
         get{
-            if ( _paragraphSpacingBefore != nil ){
-                return _paragraphSpacingBefore!
-            } else if ( parent != nil ) {
-                return parent!.paragraphSpacingBefore
-            } else {
-                return 0
-            }
+            return _paragraphSpacingBefore ?? parent?.paragraphSpacingBefore ?? 0
         }
         set {
             _paragraphSpacingBefore = newValue
@@ -237,13 +217,7 @@ open class Style{
     
     open var alignment: NSTextAlignment? {
         get{
-            if ( _alignment != nil ){
-                return _alignment!
-            } else if ( parent != nil ) {
-                return parent!.alignment
-            } else {
-                return nil
-            }
+            return _alignment ?? parent?.alignment
         }
         set {
             _alignment = newValue
@@ -284,16 +258,10 @@ open class Style{
         }
         
         if let face = definition["face"] as? String {
-            // check that this is a valid face
-            if let family = self.family {
-                let fontNames = UIFont.fontNames(forFamilyName: family)
-                let validFace = fontNames.contains("\(family)-\(face)")
-                if !validFace {
-                    print("Font \(family) \(face) invalid")
-                    print(fontNames)
-                }
-            }
             self.face = face
+        }
+        if let weight = definition["weight"] as? CGFloat {
+            self.weight = UIFont.Weight(rawValue:weight)
         }
         
         if let val = definition["size"] as? CGFloat {
@@ -307,6 +275,7 @@ open class Style{
         if let val = definition["paragraphSpacingBefore"] as? CGFloat {
             self.paragraphSpacingBefore=val
         }
+
         
         if let val = definition["lineSpacing"] as? CGFloat {
             self.lineSpacing=val
@@ -359,7 +328,7 @@ open class Style{
     
     
     /// Check for whether the parent relationship for this style is cyclical (which would be a bad thing)
-    open func parentIsCyclical()->Bool{
+    var parentIsCyclical: Bool{
         
         var thisParent: Style? = self.parent
         while (thisParent != nil){
@@ -377,11 +346,10 @@ open class Style{
     
     open var rootStyle: Style{
         get{
-            if (self.parent == nil){
-                return self
-            } else {
-                return self.parent!.rootStyle
+            if let parent = parent {
+                return parent.rootStyle
             }
+            return self
         }
         set{
             if (self.rootStyle !== newValue){
@@ -397,6 +365,19 @@ open class Style{
         let systemPointSize: CGFloat = systemFontDescriptor.pointSize
         let size = (systemPointSize/17) * targetSize
         return size
+    }
+    
+    var resolvedFontExists: Bool {
+        let postscriptName = fontDescriptor.postscriptName
+        print("🔡 Style \(name) resolves to \(postscriptName)")
+        if UIFont(name: postscriptName, size: 12) != nil {
+            return true
+        } else {
+            print("😭 Style \(name) has nonexistent font \(postscriptName) - \(family ?? "-") \(face ?? "-")")
+            let availableFaces = UIFont.fontNames(forFamilyName: family!)
+            print("Available faces: \(availableFaces)")
+            return false
+        }
     }
     
 }

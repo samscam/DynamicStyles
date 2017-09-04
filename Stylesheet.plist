@@ -8,19 +8,15 @@
 		<integer>12</integer>
 		<key>lineSpacing</key>
 		<integer>3</integer>
-		<key>face</key>
-		<string>Book</string>
-		<key>family</key>
-		<string>Avenir</string>
+		<key>weight</key>
+		<integer>-1</integer>
 	</dict>
 	<key>heading</key>
 	<dict>
 		<key>parent</key>
 		<string>normal</string>
-		<key>face</key>
-		<string>Heavy</string>
 		<key>weight</key>
-		<integer>100</integer>
+		<integer>0</integer>
 		<key>size</key>
 		<integer>24</integer>
 		<key>alignment</key>
@@ -33,7 +29,7 @@
 		<key>size</key>
 		<integer>10</integer>
 		<key>face</key>
-		<string>Black</string>
+		<string>Bold</string>
 	</dict>
 	<key>megahead</key>
 	<dict>
@@ -41,8 +37,8 @@
 		<string>heading</string>
 		<key>size</key>
 		<integer>48</integer>
-		<key>face</key>
-		<string>Ultra Light</string>
+		<key>weight</key>
+		<integer>1</integer>
 	</dict>
 	<key>caption</key>
 	<dict>
@@ -64,14 +60,21 @@
 		<key>shouldScale</key>
 		<true/>
 	</dict>
+	<key>typewriter-light</key>
+	<dict>
+		<key>family</key>
+		<string>American Typewriter</string>
+		<key>weight</key>
+		<integer>-1</integer>
+		<key>shouldScale</key>
+		<true/>
+	</dict>
 	<key>typewriter-bold</key>
 	<dict>
 		<key>parent</key>
 		<string>typewriter</string>
-		<key>family</key>
-		<string>American Typewriter</string>
-		<key>face</key>
-		<string>Bold</string>
+		<key>weight</key>
+		<integer>1</integer>
 		<key>lineSpacing</key>
 		<integer>3</integer>
 	</dict>
