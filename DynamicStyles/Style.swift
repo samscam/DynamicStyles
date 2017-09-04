@@ -29,8 +29,9 @@ open class Style{
     open var font: UIFont? {
         get{
             let fontDescriptor = self.fontDescriptor
-            let size=fontDescriptor.pointSize
+            let size = fontDescriptor.pointSize
             return UIFont(descriptor: fontDescriptor, size: size)
+            
         }
     }
     
@@ -38,13 +39,26 @@ open class Style{
     /// Returns a UIFontDescriptor
     open var fontDescriptor: UIFontDescriptor {
         get{
+            var fontDescriptor: UIFontDescriptor
             var fontAttributes: [UIFontDescriptor.AttributeName: Any] = [:]
             
-            fontAttributes[.size] = scaledSize
-            fontAttributes[.family] = family
-            fontAttributes[.face] = face
+            if let family = family {
+                fontDescriptor = UIFontDescriptor(name: family, size: size)
+            } else  {
+                fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
+            }
             
-            return UIFontDescriptor(fontAttributes: fontAttributes)
+            
+            fontAttributes[.size] = size
+            
+            if let face = face {
+                fontAttributes[.face] = face
+            }
+            
+            return fontDescriptor.addingAttributes(fontAttributes)
+                
+            
+//
         }
     }
     
@@ -52,12 +66,12 @@ open class Style{
         get {
             let paragraphStyle = NSMutableParagraphStyle()
             
-            if (self.minimumLineHeight != nil){
-                paragraphStyle.minimumLineHeight = self.minimumLineHeight!
+            if let minimumLineHeight = minimumLineHeight {
+                paragraphStyle.minimumLineHeight = minimumLineHeight
             }
             
-            if (self.maximumLineHeight != nil){
-                paragraphStyle.maximumLineHeight = self.maximumLineHeight!
+            if let maximumLineHeight = maximumLineHeight {
+                paragraphStyle.maximumLineHeight = maximumLineHeight
             }
             
             paragraphStyle.lineSpacing = self.lineSpacing
@@ -70,7 +84,7 @@ open class Style{
                 paragraphStyle.alignment = self.alignment!
             }
             
-            paragraphStyle.lineBreakMode = NSLineBreakMode.byTruncatingTail
+            paragraphStyle.lineBreakMode = .byTruncatingTail
             
             return paragraphStyle
         }
@@ -79,19 +93,13 @@ open class Style{
     
     // MARK: - Primitive getters and setters for the various attributes
     
-    /// Family name as a string - if nothing is set, will resolve to the parent's family, or default to Helvetica Neue
+    /// Family name as a string - if nothing is set, will resolve to the parent's family (or nil, being the system font)
     open var family: String?{
         get{
-            if ( _family != nil ){
-                return _family
-            } else if (parent != nil){
-                return parent!.family
-            } else {
-                return "Helvetica Neue"
-            }
+            return _family ?? parent?.family
         }
         set{
-            _family=newValue
+            _family = newValue
         }
     }
     
@@ -100,18 +108,12 @@ open class Style{
     
     
     /// Face as a string
-    open var face: String{
+    open var face: String?{
         get{
-            if ( _face != nil ){
-                return _face!
-            } else if (parent != nil) {
-                return parent!.face
-            } else {
-                return "Regular"
-            }
+            return _face ?? parent?.face
         }
         set{
-            _face=newValue
+            _face = newValue
         }
     }
     
@@ -121,16 +123,10 @@ open class Style{
     /// RAW size of the font (prior to any dynamic scaling)
     open var size: CGFloat{
         get{
-            if ( _size != nil ){
-                return _size!
-            } else if ( parent != nil ) {
-                return parent!.size
-            } else {
-                return 17
-            }
+            return _size ?? parent?.size ?? 17
         }
         set{
-            _size=newValue
+            _size = newValue
         }
     }
     
@@ -259,13 +255,7 @@ open class Style{
     
     open var shouldScale: Bool{
         get{
-            if (_shouldScale != nil){
-                return _shouldScale!
-            } else if (parent != nil){
-                return parent!.shouldScale
-            } else {
-                return false
-            }
+            return _shouldScale ?? parent?.shouldScale ?? false
         }
         set{
             _shouldScale = newValue
@@ -293,8 +283,17 @@ open class Style{
             self.family=val
         }
         
-        if let val = definition["face"] as? String {
-            self.face=val
+        if let face = definition["face"] as? String {
+            // check that this is a valid face
+            if let family = self.family {
+                let fontNames = UIFont.fontNames(forFamilyName: family)
+                let validFace = fontNames.contains("\(family)-\(face)")
+                if !validFace {
+                    print("Font \(family) \(face) invalid")
+                    print(fontNames)
+                }
+            }
+            self.face = face
         }
         
         if let val = definition["size"] as? CGFloat {
