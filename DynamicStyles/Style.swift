@@ -42,7 +42,7 @@ open class Style{
             
             var fontAttributes: [UIFontDescriptor.AttributeName: Any] = [:]
             
-            fontAttributes[.size] = size
+            fontAttributes[.size] = scaledSize
             
             if let face = face {
                 fontAttributes[.face] = face
@@ -55,7 +55,7 @@ open class Style{
             if let family = family {
                 fontAttributes[.family] = family
             } else  {
-                return UIFont.systemFont(ofSize: size, weight: weight ?? UIFont.Weight.regular).fontDescriptor
+                return UIFont.systemFont(ofSize: scaledSize, weight: weight ?? UIFont.Weight.regular).fontDescriptor
 //                return UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body).addingAttributes(fontAttributes)
             }
             let fontDescriptor = UIFontDescriptor(fontAttributes: fontAttributes)

@@ -8,37 +8,35 @@
 		<integer>12</integer>
 		<key>lineSpacing</key>
 		<integer>3</integer>
+		<key>shouldScale</key>
+		<true/>
 		<key>weight</key>
-		<integer>-1</integer>
+		<integer>0</integer>
 	</dict>
 	<key>heading</key>
 	<dict>
-		<key>parent</key>
-		<string>normal</string>
 		<key>weight</key>
-		<integer>0</integer>
+		<integer>1</integer>
 		<key>size</key>
-		<integer>24</integer>
+		<integer>48</integer>
 		<key>alignment</key>
 		<string>center</string>
 	</dict>
-	<key>list-heading</key>
-	<dict>
-		<key>parent</key>
-		<string>normal</string>
-		<key>size</key>
-		<integer>10</integer>
-		<key>face</key>
-		<string>Bold</string>
-	</dict>
-	<key>megahead</key>
+	<key>heading 2</key>
 	<dict>
 		<key>parent</key>
 		<string>heading</string>
 		<key>size</key>
-		<integer>48</integer>
+		<integer>24</integer>
 		<key>weight</key>
-		<integer>1</integer>
+		<real>0.5</real>
+	</dict>
+	<key>heading 3</key>
+	<dict>
+		<key>parent</key>
+		<string>heading 2</string>
+		<key>weight</key>
+		<real>-0.5</real>
 	</dict>
 	<key>caption</key>
 	<dict>
@@ -58,7 +56,7 @@
 		<key>family</key>
 		<string>American Typewriter</string>
 		<key>shouldScale</key>
-		<true/>
+		<false/>
 	</dict>
 	<key>typewriter-light</key>
 	<dict>
@@ -66,8 +64,6 @@
 		<string>American Typewriter</string>
 		<key>weight</key>
 		<integer>-1</integer>
-		<key>shouldScale</key>
-		<true/>
 	</dict>
 	<key>typewriter-bold</key>
 	<dict>
