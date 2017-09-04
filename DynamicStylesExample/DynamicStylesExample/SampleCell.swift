@@ -17,6 +17,7 @@ class SampleCell: UITableViewCell{
     var style: DynamicStyles.Style? {
         didSet{
             self.styleDescriptionLabel.text=self.style?.name
+            self.sampleLabel.text = self.style?.name
             self.sampleLabel.style=self.style
             self.setNeedsLayout()
             self.layoutIfNeeded()
