@@ -5,9 +5,11 @@
 	<key>normal</key>
 	<dict>
 		<key>family</key>
-		<string>Avenir Next</string>
+		<string>SF Pro Text</string>
 		<key>size</key>
 		<integer>12</integer>
+		<key>lineSpacing</key>
+		<integer>3</integer>
 		<key>face</key>
 		<string>Regular</string>
 	</dict>

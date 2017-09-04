@@ -73,7 +73,7 @@ Definitions may use the following keys:
 
 key | type | default | notes
 --- | ---- | ------- | -----
-family | string | Helvetica Neue
+family | string | SF Pro Text
 face | string | Regular
 size | number | 17
 shouldScale | boolean | NO | Enables dynamic type scaling (including larger accessibility sizes)

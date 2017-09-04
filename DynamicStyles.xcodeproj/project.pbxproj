@@ -9,8 +9,12 @@
 /* Begin PBXBuildFile section */
 		2290B1F31AC821F700816878 /* DynamicStyles.h in Headers */ = {isa = PBXBuildFile; fileRef = 2290B1F21AC821F700816878 /* DynamicStyles.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2290B1F91AC821F700816878 /* DynamicStyles.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2290B1ED1AC821F700816878 /* DynamicStyles.framework */; };
-		2290B2441AC82A0900816878 /* DynamicStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2290B2431AC82A0900816878 /* DynamicStyles.swift */; };
+		2290B2441AC82A0900816878 /* NSBundle+InterfaceBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2290B2431AC82A0900816878 /* NSBundle+InterfaceBuilder.swift */; };
 		2290B24A1AC87CA600816878 /* DynamicStylesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2290B1FF1AC821F700816878 /* DynamicStylesTests.swift */; };
+		7E356F5D1F5D914600DC8509 /* Stylesheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E356F5C1F5D914600DC8509 /* Stylesheet.swift */; };
+		7E356F5F1F5D918300DC8509 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E356F5E1F5D918300DC8509 /* Style.swift */; };
+		7E356F611F5D91F700DC8509 /* DynamicStyleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E356F601F5D91F700DC8509 /* DynamicStyleLabel.swift */; };
+		7E356F641F5D923600DC8509 /* DynamicStyleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E356F631F5D923600DC8509 /* DynamicStyleButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,7 +36,11 @@
 		2290B1F81AC821F700816878 /* DynamicStylesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DynamicStylesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2290B1FE1AC821F700816878 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2290B1FF1AC821F700816878 /* DynamicStylesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicStylesTests.swift; sourceTree = "<group>"; };
-		2290B2431AC82A0900816878 /* DynamicStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicStyles.swift; sourceTree = "<group>"; };
+		2290B2431AC82A0900816878 /* NSBundle+InterfaceBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSBundle+InterfaceBuilder.swift"; sourceTree = "<group>"; };
+		7E356F5C1F5D914600DC8509 /* Stylesheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stylesheet.swift; sourceTree = "<group>"; };
+		7E356F5E1F5D918300DC8509 /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
+		7E356F601F5D91F700DC8509 /* DynamicStyleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicStyleLabel.swift; sourceTree = "<group>"; };
+		7E356F631F5D923600DC8509 /* DynamicStyleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicStyleButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,7 +86,10 @@
 			isa = PBXGroup;
 			children = (
 				2290B1F21AC821F700816878 /* DynamicStyles.h */,
-				2290B2431AC82A0900816878 /* DynamicStyles.swift */,
+				7E356F5C1F5D914600DC8509 /* Stylesheet.swift */,
+				7E356F5E1F5D918300DC8509 /* Style.swift */,
+				7E356F621F5D920200DC8509 /* Views */,
+				2290B2431AC82A0900816878 /* NSBundle+InterfaceBuilder.swift */,
 				2290B1F01AC821F700816878 /* Supporting Files */,
 			);
 			path = DynamicStyles;
@@ -107,6 +118,15 @@
 				2290B1FE1AC821F700816878 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		7E356F621F5D920200DC8509 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7E356F601F5D91F700DC8509 /* DynamicStyleLabel.swift */,
+				7E356F631F5D923600DC8509 /* DynamicStyleButton.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -220,7 +240,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2290B2441AC82A0900816878 /* DynamicStyles.swift in Sources */,
+				7E356F611F5D91F700DC8509 /* DynamicStyleLabel.swift in Sources */,
+				2290B2441AC82A0900816878 /* NSBundle+InterfaceBuilder.swift in Sources */,
+				7E356F5F1F5D918300DC8509 /* Style.swift in Sources */,
+				7E356F5D1F5D914600DC8509 /* Stylesheet.swift in Sources */,
+				7E356F641F5D923600DC8509 /* DynamicStyleButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

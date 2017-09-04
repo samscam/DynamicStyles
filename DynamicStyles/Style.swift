@@ -1,80 +1,17 @@
 //
-//  DynamicStyles.swift
+//  Style.swift
 //  DynamicStyles
 //
-//  Created by Sam Easterby-Smith on 29/03/2015.
-//  Copyright (c) 2015 Spotlight Kid. All rights reserved.
+//  Created by Easterby-Smith, Sam (Developer) on 04/09/2017.
+//  Copyright © 2017 Spotlight Kid. All rights reserved.
 //
 
 import Foundation
 import UIKit
 
-
-// MARK: - DynamicStyles
-
 /**
-A `Stylesheet` is a container for a selection of styles loaded from a plist. Currently this only properly supports the default `Stylesheet.plist` which should be located somewhere in your project.
-*/
-
-open class Stylesheet{
-    
-    static open let defaultStylesheet = Stylesheet(named: "Stylesheet")
-    
-    open var styles: [String:Style] = [:]
-
-    
-
-    /// Designated initialiser - grabs the named .plist and instantiates all the styles it contains
-    
-    public init?(path stylesheetPath: String){
-        
-        if let stylesheetDict = NSDictionary(contentsOfFile: stylesheetPath){
-            
-            // Iterate through the incoming dict and create style objects for each of the keys
-            for (styleIdentifier, styleDict): (String, [String:AnyObject]) in stylesheetDict as! [String:[String:AnyObject]] {
-                styles[styleIdentifier]=Style(name: styleIdentifier, definition: styleDict)
-            }
-        }
-        
-        // Resolve parents
-        for (_, style): (String, Style) in styles{
-            if (style.parentName != nil){
-                style.parent=self.style(style.parentName!)
-            }
-        }
-        
-        // Check for cyclicity. This will throw an error at runtime if styles are inbred ;-)
-        for (_, style): (String, Style) in styles{
-            assert(!style.parentIsCyclical(),"Styles must not be cyclical")
-        }
-    }
-    
-    // Convenience initialisers
-    
-    public convenience init?(named stylesheetName: String,
-        inBundle bundle: Bundle?){
-            
-        if let inBundle = (bundle != nil) ? bundle : Bundle.main,
-            let stylesheetPath: String = inBundle.path(forResource: stylesheetName, ofType: "plist") {
-            self.init(path:stylesheetPath)
-        } else {
-            return nil
-        }
-    }
-    
-    public convenience init?(named name: String){
-        self.init(named: name, inBundle: nil)
-    }
-    
-    open func style(_ name: String)->Style?{
-        return styles[name]
-    }
-    
-}
-
-/**
-    `Style` is the main model object for styles!
-*/
+ `Style` is the main model object for styles!
+ */
 
 open class Style{
     
@@ -83,11 +20,11 @@ open class Style{
     open var name: String
     
     /// The name of the parent style - used internally to resolve the hierarchy
-    fileprivate var parentName: String?
+    var parentName: String?
     
     /// The parent style object - populated by the stylesheet after creation. Properties of the parent will be reflected unless overriden by the child...
-    open var parent: Style?
-
+    weak var parent: Style?
+    
     /// UIFont object based on this style
     open var font: UIFont? {
         get{
@@ -106,7 +43,7 @@ open class Style{
             fontAttributes[.size] = scaledSize
             fontAttributes[.family] = family
             fontAttributes[.face] = face
-
+            
             return UIFontDescriptor(fontAttributes: fontAttributes)
         }
     }
@@ -128,7 +65,7 @@ open class Style{
             paragraphStyle.paragraphSpacing = self.paragraphSpacing
             
             paragraphStyle.paragraphSpacingBefore = self.paragraphSpacingBefore
-
+            
             if (self.alignment != nil){
                 paragraphStyle.alignment = self.alignment!
             }
@@ -139,7 +76,7 @@ open class Style{
         }
     }
     
-
+    
     // MARK: - Primitive getters and setters for the various attributes
     
     /// Family name as a string - if nothing is set, will resolve to the parent's family, or default to Helvetica Neue
@@ -211,7 +148,7 @@ open class Style{
     }
     
     /// minimumLineHeight sets the explicit line height - this is absolute and will not scale - set to nil if you want to use lineSpacing
-
+    
     open var minimumLineHeight: CGFloat? {
         get{
             if ( _minimumLineHeight != nil ){
@@ -340,13 +277,13 @@ open class Style{
     ///
     
     /**
-    The designated initializer
-    @param name The name of this style
-    @param dictionary The fragment of the plist containing the definition of the style
-    */
+     The designated initializer
+     @param name The name of this style
+     @param dictionary The fragment of the plist containing the definition of the style
+     */
     
     public init(name: String, definition : [String:AnyObject]){
-
+        
         self.name=name
         self.parentName=definition["parent"] as? String
         
@@ -363,7 +300,7 @@ open class Style{
         if let val = definition["size"] as? CGFloat {
             self.size=val
         }
-
+        
         if let val = definition["paragraphSpacing"] as? CGFloat {
             self.paragraphSpacing=val
         }
@@ -405,8 +342,8 @@ open class Style{
         
     }
     
-
-
+    
+    
     open func attributedString(_ text: String?)->NSAttributedString?{
         if let text = text, let font = self.font, let paragraphStyle = self.paragraphStyle {
             let attributes: [NSAttributedStringKey : Any] = [ .font : font , .paragraphStyle : paragraphStyle ]
@@ -424,7 +361,7 @@ open class Style{
     
     /// Check for whether the parent relationship for this style is cyclical (which would be a bad thing)
     open func parentIsCyclical()->Bool{
-
+        
         var thisParent: Style? = self.parent
         while (thisParent != nil){
             if (thisParent === self){
@@ -453,7 +390,7 @@ open class Style{
             }
         }
     }
-
+    
     /// Calculates a scaled size based on the users's current Dynamic Type settings
     
     fileprivate func scaleSize(_ targetSize: CGFloat)->CGFloat{
@@ -462,160 +399,5 @@ open class Style{
         let size = (systemPointSize/17) * targetSize
         return size
     }
-
-}
-
-// MARK: - UIView subclasses
-
-/**
-    `DynamicStyleLabel` is a UILabel subclass which supports styling
-*/
-
-@IBDesignable open class DynamicStyleLabel: UILabel{
     
-    /// The active stylesheet (defaults to the default one)
-    
-    var stylesheet: Stylesheet? = Stylesheet.defaultStylesheet
-    
-    /// The *name* of the style to be applied. Setting this (in code or from Interface Builder) will cause the style with said name from the active stylesheet to be applied to the label.
-    
-    @IBInspectable open var styleName: NSString? {
-        didSet{
-            if (styleName != nil) {
-                style=stylesheet?.style(styleName! as String)
-            } else {
-                style=nil
-            }
-        }
-    }
-    
-    /// The *style* - setting this sets the font of the label to match the font defined by the style
-    
-    open var style: Style? {
-        didSet{
-            updateDisplay()
-        }
-    }
-    
-    /// Provides @IBDesignable functionality
-    
-    override open func prepareForInterfaceBuilder() {
-        
-        let bundle = Bundle.projectBundleForInterfaceBuilder()
-        self.stylesheet=Stylesheet(named: "Stylesheet", inBundle: bundle)
-
-        // Force the style to be updated
-        if let sn=self.styleName {
-            self.style=self.stylesheet?.style(sn as String)
-        }
-    }
-    
-    override open var text: String?{
-        didSet{
-            updateDisplay()
-        }
-    }
-    
-    fileprivate func updateDisplay(){
-        #if !TARGET_INTERFACE_BUILDER
-            if (self.text != nil){
-                let attributedString = style?.attributedString(self.text)
-                self.attributedText = attributedString
-            }
-        #else
-            self.font=self.style?.font
-        #endif
-        
-    }
-    
-    open var gutter: UIEdgeInsets = UIEdgeInsetsMake(2, 0, 2, 0) {
-        didSet{
-            self.setNeedsUpdateConstraints()
-        }
-    }
-    
-    override open var intrinsicContentSize : CGSize {
-        var superSize = super.intrinsicContentSize
-        superSize.height += gutter.bottom + gutter.top
-        superSize.width += gutter.left + gutter.right
-        return superSize
-    }
-    
-
-}
-
-/**
-`DynamicStyleButton` is a UIButton subclass which supports styling
-*/
-
-@IBDesignable open class DynamicStyleButton: UIButton{
-    
-    /// The active stylesheet (defaults to the default one).
-    
-    var stylesheet: Stylesheet? = Stylesheet.defaultStylesheet
-    
-    /// The *name* of the style to be applied. Setting this (in code or from Interface Builder) will cause the style with said name from the active stylesheet to be applied to the label.
-    
-    @IBInspectable open var styleName: NSString? {
-        didSet{
-            if (styleName != nil) {
-                style=stylesheet?.style(styleName! as String)
-            } else {
-                style=nil
-            }
-        }
-    }
-    
-    /// The *style* - setting this sets the font of the label to match the font defined by the style
-    
-    open var style: Style? {
-        didSet{
-            updateDisplay()
-        }
-    }
-    
-    fileprivate func updateDisplay(){
-        self.titleLabel?.font=style?.font
-    }
-    
-    /// Provides @IBDesignable functionality
-    
-    override open func prepareForInterfaceBuilder() {
-        
-        let bundle = Bundle.projectBundleForInterfaceBuilder()
-        self.stylesheet=Stylesheet(named: "Stylesheet", inBundle: bundle)
-        
-        // Force the style to be updated
-        if let sn=self.styleName {
-            self.style=self.stylesheet?.style(sn as String)
-        }
-    }
-    
-}
-
-// MARK: - NSBundle extension
-
-
-public extension Bundle{
-    
-    /// Returns an NSBundle based on the project's root directory. In the context of Interface Builder, asking for NSBundle.mainBundle() will provide a bundle for some internal part of XCode. This instead gives us something from which we can find project-specific resources like the `Stylesheet.plist`
-    
-    public class func projectBundleForInterfaceBuilder() -> Bundle? {
-
-        let processInfo = ProcessInfo.processInfo
-        let environment = processInfo.environment 
-        let projectSourceDirectories : String = environment["IB_PROJECT_SOURCE_DIRECTORIES"]!
-        let directories = projectSourceDirectories.components(separatedBy: ":")
-        
-        let path = directories[0] as String
-        var url = URL(fileURLWithPath: path)
-        // Remove pods from the path components (assuming we are in a cocoapods environment)
-        if (url.lastPathComponent == "Pods"){
-            url=url.deletingLastPathComponent()
-        }
-        
-        // Create and a bundle based on the project path
-        return Bundle(url: url)
-        
-    }
 }
