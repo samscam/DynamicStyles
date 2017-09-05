@@ -174,7 +174,7 @@ public class Style: Decodable {
     fileprivate var _face: String?
     
     private var _weight: UIFont.Weight?
-    var weight: UIFont.Weight? {
+    public var weight: UIFont.Weight? {
         get { return _weight ?? parent?.weight ?? .regular }
         set { _weight = newValue }
     }

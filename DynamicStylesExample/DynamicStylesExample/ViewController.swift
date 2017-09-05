@@ -59,6 +59,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         return self.stylesheet.styles.count
     }
 
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let key = Array(self.stylesheet.styles.keys).sorted()[indexPath.row] as String? {
+            let style = self.stylesheet.style(key)
+            self.performSegue(withIdentifier: "styleDetailSegue", sender: style)
+        }
+    }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let style = sender as? Style {
+            (segue.destination as! StyleDetailViewController).style = style
+        }
+        super.prepare(for: segue, sender: sender)
+    }
 }
 
