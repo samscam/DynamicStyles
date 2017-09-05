@@ -11,6 +11,7 @@
 		2290B1F91AC821F700816878 /* DynamicStyles.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2290B1ED1AC821F700816878 /* DynamicStyles.framework */; };
 		2290B2441AC82A0900816878 /* NSBundle+InterfaceBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2290B2431AC82A0900816878 /* NSBundle+InterfaceBuilder.swift */; };
 		2290B24A1AC87CA600816878 /* DynamicStylesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2290B1FF1AC821F700816878 /* DynamicStylesTests.swift */; };
+		22FC64FE1F5E9A120087B960 /* .travis.yml in Resources */ = {isa = PBXBuildFile; fileRef = 22FC64FD1F5E9A120087B960 /* .travis.yml */; };
 		7E356F5D1F5D914600DC8509 /* Stylesheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E356F5C1F5D914600DC8509 /* Stylesheet.swift */; };
 		7E356F5F1F5D918300DC8509 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E356F5E1F5D918300DC8509 /* Style.swift */; };
 		7E356F611F5D91F700DC8509 /* DynamicStyleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E356F601F5D91F700DC8509 /* DynamicStyleLabel.swift */; };
@@ -37,6 +38,7 @@
 		2290B1FE1AC821F700816878 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2290B1FF1AC821F700816878 /* DynamicStylesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicStylesTests.swift; sourceTree = "<group>"; };
 		2290B2431AC82A0900816878 /* NSBundle+InterfaceBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSBundle+InterfaceBuilder.swift"; sourceTree = "<group>"; };
+		22FC64FD1F5E9A120087B960 /* .travis.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
 		7E356F5C1F5D914600DC8509 /* Stylesheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stylesheet.swift; sourceTree = "<group>"; };
 		7E356F5E1F5D918300DC8509 /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		7E356F601F5D91F700DC8509 /* DynamicStyleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicStyleLabel.swift; sourceTree = "<group>"; };
@@ -65,6 +67,7 @@
 		2290B1E31AC821F700816878 = {
 			isa = PBXGroup;
 			children = (
+				22FC64FD1F5E9A120087B960 /* .travis.yml */,
 				227E91CD1B70FEE200CACBBA /* Readme.md */,
 				227E91CE1B70FF8B00CACBBA /* DynamicStyles.podspec */,
 				2290B1EF1AC821F700816878 /* DynamicStyles */,
@@ -223,6 +226,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22FC64FE1F5E9A120087B960 /* .travis.yml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

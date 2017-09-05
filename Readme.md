@@ -15,21 +15,21 @@
 
 ### Requirements
 
-* Xcode 8
-* Swift 3.0
-* iOS 8
+* Xcode 9
+* Swift 4.0
+* iOS >= 8.2
 
 ### CocoaPods
 
 You're probably best using [CocoaPods](http://cocoapods.org)
 
-Add `pod 'DynamicStyles', '~>0.3'` to your podfile.
+Add `pod 'DynamicStyles', '~>0.4'` to your podfile.
 
 Run `pod install`
 
 ### Carthage
 
-It sorta works with Carthage too - BUT things won't render in Interface Builder and you'll have to use User Defined Runtime Attributes to set the styleName for any DynamicStyleLabel or DynamicStyleButton you create. If you still want to use Carthage, add `github "Samscam/DynamicStyles" ~>0.3` to your Cartfile and build and link the framework as usual.
+It sorta works with Carthage too - BUT things won't render in Interface Builder and you'll have to use User Defined Runtime Attributes to set the styleName for any DynamicStyleLabel or DynamicStyleButton you create. If you still want to use Carthage, add `github "Samscam/DynamicStyles" ~>0.4` to your Cartfile and build and link the framework as usual.
 
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
@@ -73,8 +73,9 @@ Definitions may use the following keys:
 
 key | type | default | notes
 --- | ---- | ------- | -----
-family | string | SF Pro Text
-face | string | Regular
+family | string | San Francisco (system font)
+face | string | Regular | To pick a specific variant - must match the `Face` as displayed in FontBook — does not work with the system font. Picking an invalid face will cause it to log the avaiable ones at runtime.
+weight | number | 0.0 | Range from -1.0 (ultra-light) thru 0.0 (regular) to 1.0 (ultra-bold) — works well for the system font
 size | number | 17
 shouldScale | boolean | NO | Enables dynamic type scaling (including larger accessibility sizes)
 parent | string | | reference to a parent style name - must not be circular
