@@ -19,6 +19,8 @@
 		<integer>1</integer>
 		<key>size</key>
 		<integer>48</integer>
+		<key>shouldScale</key>
+		<true/>
 		<key>alignment</key>
 		<string>center</string>
 	</dict>
