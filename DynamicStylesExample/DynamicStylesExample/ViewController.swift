@@ -46,9 +46,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SampleCell") as! SampleCell
-        let key = Array(self.stylesheet.styles.keys)[(indexPath as NSIndexPath).row] as String?
-        let style = self.stylesheet.style(key!)
-        cell.style=style
+        if let key = Array(self.stylesheet.styles.keys).sorted()[indexPath.row] as String? {
+            let style = self.stylesheet.style(key)
+            cell.style=style
+        }
         return cell
     }
     
