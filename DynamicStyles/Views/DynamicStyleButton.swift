@@ -56,4 +56,14 @@ import UIKit
         }
     }
     
+    // Catch size changes on-the-fly (only works for iOS 10+)
+    override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        
+        if #available(iOS 10.0, *) {
+            if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+                // content size has changed
+                self.updateDisplay()
+            }
+        }
+    }
 }
