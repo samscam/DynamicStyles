@@ -48,7 +48,7 @@ public class DynamicStyleLabel: UILabel{
         super.prepareForInterfaceBuilder()
         
         let bundle = Bundle.projectBundleForInterfaceBuilder()
-        self.stylesheet=Stylesheet(named: "Stylesheet", inBundle: bundle)
+        self.stylesheet = try! Stylesheet.with(name: "Stylesheet", inBundle: bundle)
         
         // Force the style to be updated
         if let sn=self.styleName {

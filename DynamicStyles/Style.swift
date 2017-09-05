@@ -13,20 +13,72 @@ import UIKit
  `Style` is the main model object for styles!
  */
 
-open class Style{
+public class Style: Decodable {
     
+    enum CodingKeys: String, CodingKey {
+        case parentName = "parent"
+        case family
+        case face
+        case weight
+        case size
+        case shouldScale
+        case paragraphSpacing
+        case lineSpacing
+        case alignment
+        case minimumLineHeight
+        case maximumLineHeight
+    }
+    
+    
+    public required init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+
+        parentName = try values.decodeIfPresent(String.self, forKey: .parentName)
+        _family = try values.decodeIfPresent(String.self, forKey: .family)
+        _face = try values.decodeIfPresent(String.self, forKey: .face)
+        
+        if let weightVal = try values.decodeIfPresent(CGFloat.self, forKey: .weight) {
+            weight = UIFont.Weight(rawValue: weightVal)
+        }
+        
+        _size = try values.decodeIfPresent(CGFloat.self, forKey: .size)
+        _shouldScale = try values.decodeIfPresent(Bool.self, forKey: .shouldScale)
+        _paragraphSpacing = try values.decodeIfPresent(CGFloat.self, forKey: .paragraphSpacing)
+        _lineSpacing = try values.decodeIfPresent(CGFloat.self, forKey: .lineSpacing)
+        
+        _minimumLineHeight = try values.decodeIfPresent(CGFloat.self, forKey: .minimumLineHeight)
+        _maximumLineHeight = try values.decodeIfPresent(CGFloat.self, forKey: .maximumLineHeight)
+        
+        if let alignmentValue = try values.decodeIfPresent(String.self, forKey: .alignment) {
+
+            switch (alignmentValue){
+            case "center":
+                self.alignment = NSTextAlignment.center
+            case "right":
+                self.alignment = NSTextAlignment.right
+            case "justified":
+                self.alignment = NSTextAlignment.justified
+            case "natural":
+                self.alignment = NSTextAlignment.natural
+            default:
+                self.alignment = NSTextAlignment.left
+            }
+        }
+    }
+    
+
     
     /// The name of the style
-    open var name: String
+    public var name: String?
     
     /// The name of the parent style - used internally to resolve the hierarchy
     var parentName: String?
     
     /// The parent style object - populated by the stylesheet after creation. Properties of the parent will be reflected unless overriden by the child...
-    weak var parent: Style?
+    public weak var parent: Style?
     
     /// UIFont object based on this style
-    open var font: UIFont? {
+    public var font: UIFont? {
         get{
             let fontDescriptor = self.fontDescriptor
             let size = fontDescriptor.pointSize
@@ -56,7 +108,6 @@ open class Style{
                 fontAttributes[.family] = family
             } else  {
                 return UIFont.systemFont(ofSize: scaledSize, weight: weight ?? UIFont.Weight.regular).fontDescriptor
-//                return UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body).addingAttributes(fontAttributes)
             }
             let fontDescriptor = UIFontDescriptor(fontAttributes: fontAttributes)
             
@@ -119,6 +170,8 @@ open class Style{
             _face = newValue
         }
     }
+    /// Private variable to back face name
+    fileprivate var _face: String?
     
     private var _weight: UIFont.Weight?
     var weight: UIFont.Weight? {
@@ -126,9 +179,6 @@ open class Style{
         set { _weight = newValue }
     }
     
-    
-    /// Private variable to back face name
-    fileprivate var _face: String?
     
     /// RAW size of the font (prior to any dynamic scaling)
     open var size: CGFloat{
@@ -238,77 +288,6 @@ open class Style{
     
     fileprivate var _shouldScale: Bool?
     
-    ///
-    
-    /**
-     The designated initializer
-     @param name The name of this style
-     @param dictionary The fragment of the plist containing the definition of the style
-     */
-    
-    public init(name: String, definition : [String:AnyObject]){
-        
-        self.name=name
-        self.parentName=definition["parent"] as? String
-        
-        // Set properties based on what was in the plist fragment
-        
-        if let val = definition["family"] as? String {
-            self.family=val
-        }
-        
-        if let face = definition["face"] as? String {
-            self.face = face
-        }
-        if let weight = definition["weight"] as? CGFloat {
-            self.weight = UIFont.Weight(rawValue:weight)
-        }
-        
-        if let val = definition["size"] as? CGFloat {
-            self.size=val
-        }
-        
-        if let val = definition["paragraphSpacing"] as? CGFloat {
-            self.paragraphSpacing=val
-        }
-        
-        if let val = definition["paragraphSpacingBefore"] as? CGFloat {
-            self.paragraphSpacingBefore=val
-        }
-
-        
-        if let val = definition["lineSpacing"] as? CGFloat {
-            self.lineSpacing=val
-        }
-        
-        if let val = definition["alignment"] as? String {
-            switch (val){
-            case "center":
-                self.alignment = NSTextAlignment.center
-            case "right":
-                self.alignment = NSTextAlignment.right
-            case "justified":
-                self.alignment = NSTextAlignment.justified
-            case "natural":
-                self.alignment = NSTextAlignment.natural
-            default:
-                self.alignment = NSTextAlignment.left
-            }
-        }
-        
-        if let val = definition["minimumLineHeight"] as? CGFloat {
-            self.minimumLineHeight=val
-        }
-        if let val = definition["maximumLineHeight"] as? CGFloat {
-            self.maximumLineHeight=val
-        }
-        
-        if let val = definition["shouldScale"] as? Bool {
-            self.shouldScale=val
-        }
-        
-        
-    }
     
     
     
@@ -381,3 +360,5 @@ open class Style{
     }
     
 }
+
+
