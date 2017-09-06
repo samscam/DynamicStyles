@@ -1,5 +1,5 @@
 ## Overview
-**DynamicStyles**, the missing stylesheet manager for iOS apps.
+**DynamicStyles**, a stylesheet manager for iOS apps.
 
 * Write a single stylesheet to manage all the typography in your iOS app
 * WYSIWYG styles in InterfaceBuilder...
@@ -9,7 +9,6 @@
 * Optionally uses Apple's DynamicType font scaling for full accessible joy
 * Written in **Swift**
 * Compatible with iOS **> 8.0**
-* Contributions welcome
 
 ## Installation
 
@@ -29,7 +28,14 @@ Run `pod install`
 
 ### Carthage
 
-It sorta works with Carthage too - BUT things won't render in Interface Builder and you'll have to use User Defined Runtime Attributes to set the styleName for any DynamicStyleLabel or DynamicStyleButton you create. If you still want to use Carthage, add `github "Samscam/DynamicStyles" ~>0.4` to your Cartfile and build and link the framework as usual.
+It works with Carthage – add `github "Samscam/DynamicStyles" ~>0.4` to your Cartfile. Build and link the library in the usual way:
+* run `carthage update` from the project root
+* drag the framework from `Carthage/Build/iOS/DynamicStyles.framework` add it to `Linked Frameworks and Libraries` in your target's general tab
+* add the framework to the input files and output files list in your `Copy Frameworks` step
+
+In order to **persuade Interface Builder** to see and render the @IBDesignable and @IBInspectable DynamicStyleLabel (etc) subclasses you need to drag the `DynamicStyles.xcodeproj` from the `Carthage/Checkouts/DynamicStyles/` folder into your Xcode project or workspace.
+
+**Note that there is a bug in XCode 9 betas which causes it to crash when you do this. The workaround is to drag another (preferably innocuous) file in along with the framework - the `DynamicStyles.podspec` is probably the most convenient. You then remove it once added.**
 
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
@@ -40,7 +46,9 @@ Clone the repository if you want to integrate the framework manually or play wit
 
 ### ... and then
 
-Create a property list called `Stylesheet.plist` somwehere in your project. There is one in the example project in the repo which you could use as a starting point. See the syntax section below for details.
+Create a property list called `Stylesheet.plist` somwehere in your project. Make sure it is included in your target's `Copy Bundle Resources` step.
+
+There is one in the example project in the repo which you could use as a starting point. See the syntax section below for details.
 
 You can theoretically tell it to use a custom named plist from code but you won't get IB rendering if you do that.
 
