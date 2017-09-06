@@ -41,6 +41,7 @@ class StyleDetailViewController: UIViewController {
         let style = style else {
             return
         }
+        self.navigationItem.title = style.name
         
         topSampleLabel.style = style
         topSampleLabel.text = style.name
