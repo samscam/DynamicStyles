@@ -11,7 +11,6 @@
 		2290B1F91AC821F700816878 /* DynamicStyles.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2290B1ED1AC821F700816878 /* DynamicStyles.framework */; };
 		2290B2441AC82A0900816878 /* NSBundle+InterfaceBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2290B2431AC82A0900816878 /* NSBundle+InterfaceBuilder.swift */; };
 		2290B24A1AC87CA600816878 /* DynamicStylesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2290B1FF1AC821F700816878 /* DynamicStylesTests.swift */; };
-		22FC64FE1F5E9A120087B960 /* .travis.yml in Resources */ = {isa = PBXBuildFile; fileRef = 22FC64FD1F5E9A120087B960 /* .travis.yml */; };
 		7E356F5D1F5D914600DC8509 /* Stylesheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E356F5C1F5D914600DC8509 /* Stylesheet.swift */; };
 		7E356F5F1F5D918300DC8509 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E356F5E1F5D918300DC8509 /* Style.swift */; };
 		7E356F611F5D91F700DC8509 /* DynamicStyleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E356F601F5D91F700DC8509 /* DynamicStyleLabel.swift */; };
@@ -227,7 +226,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22FC64FE1F5E9A120087B960 /* .travis.yml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
