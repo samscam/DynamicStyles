@@ -19,7 +19,7 @@ open class Stylesheet: Decodable {
     static open var defaultStylesheet: Stylesheet? = try! Stylesheet.with(name: "Stylesheet")
     
     
-    struct SkyleNameKey: CodingKey {
+    struct StyleNameKey: CodingKey {
         var stringValue: String
         init(stringValue: String) {
             self.stringValue = stringValue
@@ -29,7 +29,7 @@ open class Stylesheet: Decodable {
     }
     
     required public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: SkyleNameKey.self)
+        let container = try decoder.container(keyedBy: StyleNameKey.self)
         for key in container.allKeys {
             let style = try container.decode(Style.self, forKey: key)
             style.name = key.stringValue
