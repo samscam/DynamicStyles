@@ -38,7 +38,7 @@ public class Style: Decodable {
         _face = try values.decodeIfPresent(String.self, forKey: .face)
         
         if let weightVal = try values.decodeIfPresent(CGFloat.self, forKey: .weight) {
-            weight = UIFont.Weight(rawValue: weightVal)
+            _weight = UIFont.Weight(rawValue: weightVal)
         }
         
         _size = try values.decodeIfPresent(CGFloat.self, forKey: .size)
@@ -69,7 +69,7 @@ public class Style: Decodable {
 
     
     /// The name of the style
-    public var name: String?
+    public var name: String!
     
     /// The name of the parent style - used internally to resolve the hierarchy
     var parentName: String?
@@ -348,11 +348,11 @@ public class Style: Decodable {
     
     var resolvedFontExists: Bool {
         let postscriptName = fontDescriptor.postscriptName
-        print("🔡 Style \(name) resolves to \(postscriptName)")
+        print("🔡 Style \"\(name!)\" resolves to \"\(postscriptName)\"")
         if UIFont(name: postscriptName, size: 12) != nil {
             return true
         } else {
-            print("😭 Style \(name) has nonexistent font \(postscriptName) - \(family ?? "-") \(face ?? "-")")
+            print("😭 Style \"\(name!)\" has nonexistent font \(postscriptName) - \(family ?? "-") \(face ?? "-")")
             let availableFaces = UIFont.fontNames(forFamilyName: family!)
             print("Available faces: \(availableFaces)")
             return false
