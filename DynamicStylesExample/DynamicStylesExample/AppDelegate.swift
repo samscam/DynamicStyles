@@ -8,6 +8,8 @@
 
 import UIKit
 
+import DynamicStyles
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 

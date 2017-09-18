@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		228B09CE1F603F6600B8E210 /* DynamicStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228B09CD1F603F6600B8E210 /* DynamicStyles.swift */; };
 		2290B1F31AC821F700816878 /* DynamicStyles.h in Headers */ = {isa = PBXBuildFile; fileRef = 2290B1F21AC821F700816878 /* DynamicStyles.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2290B1F91AC821F700816878 /* DynamicStyles.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2290B1ED1AC821F700816878 /* DynamicStyles.framework */; };
 		2290B2441AC82A0900816878 /* NSBundle+InterfaceBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2290B2431AC82A0900816878 /* NSBundle+InterfaceBuilder.swift */; };
@@ -30,6 +31,7 @@
 /* Begin PBXFileReference section */
 		227E91CD1B70FEE200CACBBA /* Readme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Readme.md; sourceTree = "<group>"; };
 		227E91CE1B70FF8B00CACBBA /* DynamicStyles.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = DynamicStyles.podspec; sourceTree = "<group>"; };
+		228B09CD1F603F6600B8E210 /* DynamicStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicStyles.swift; sourceTree = "<group>"; };
 		2290B1ED1AC821F700816878 /* DynamicStyles.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DynamicStyles.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2290B1F11AC821F700816878 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2290B1F21AC821F700816878 /* DynamicStyles.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DynamicStyles.h; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				2290B1F21AC821F700816878 /* DynamicStyles.h */,
+				228B09CD1F603F6600B8E210 /* DynamicStyles.swift */,
 				7E356F5C1F5D914600DC8509 /* Stylesheet.swift */,
 				7E356F5E1F5D918300DC8509 /* Style.swift */,
 				7E356F621F5D920200DC8509 /* Views */,
@@ -246,6 +249,7 @@
 				7E356F611F5D91F700DC8509 /* DynamicStyleLabel.swift in Sources */,
 				2290B2441AC82A0900816878 /* NSBundle+InterfaceBuilder.swift in Sources */,
 				7E356F5F1F5D918300DC8509 /* Style.swift in Sources */,
+				228B09CE1F603F6600B8E210 /* DynamicStyles.swift in Sources */,
 				7E356F5D1F5D914600DC8509 /* Stylesheet.swift in Sources */,
 				7E356F641F5D923600DC8509 /* DynamicStyleButton.swift in Sources */,
 			);

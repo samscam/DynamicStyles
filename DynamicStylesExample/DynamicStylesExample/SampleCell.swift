@@ -14,7 +14,7 @@ class SampleCell: UITableViewCell{
     @IBOutlet weak var styleDescriptionLabel: DynamicStyleLabel!
     @IBOutlet weak var sampleLabel: DynamicStyleLabel!
     
-    var style: DynamicStyles.Style? {
+    var style: Style? {
         didSet{
             self.styleDescriptionLabel.text=self.style?.name
             self.sampleLabel.text = self.style?.name

@@ -20,7 +20,7 @@ public class DynamicStyleLabel: UILabel{
     
     /// The active stylesheet (defaults to the default one)
     
-    var stylesheet: Stylesheet? = Stylesheet.defaultStylesheet
+    var stylesheet: Stylesheet? = DynamicStyles.defaultStylesheet
     
     /// The *name* of the style to be applied. Setting this (in code or from Interface Builder) will cause the style with said name from the active stylesheet to be applied to the label.
     

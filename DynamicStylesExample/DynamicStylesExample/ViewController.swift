@@ -16,7 +16,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        if let sheet = Stylesheet.defaultStylesheet {
+        if let sheet = DynamicStyles.defaultStylesheet {
             stylesheet = sheet
         } else {
             return nil

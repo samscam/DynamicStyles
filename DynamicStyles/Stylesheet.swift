@@ -14,10 +14,8 @@ import Foundation
 
 
 
-open class Stylesheet: Decodable {
-    
-    static open var defaultStylesheet: Stylesheet? = try! Stylesheet.with(name: "Stylesheet")
-    
+public class Stylesheet: Decodable {
+
     
     struct StyleNameKey: CodingKey {
         var stringValue: String
@@ -60,18 +58,9 @@ open class Stylesheet: Decodable {
     }
     
     // MARK: Factory methods
-    
-    
-    /// grabs the .plist from the given path and instantiates the styles
-    class func with(path stylesheetPath: String) throws -> Stylesheet {
-        let stylesheetURL = URL(fileURLWithPath: stylesheetPath)
-        let stylesheetData = try Data(contentsOf: stylesheetURL)
-        return try PropertyListDecoder().decode(self.self, from: stylesheetData)
-    }
-    
     // finds the named plist in the bundle and instantiates the styles
-    class func with(name stylesheetName: String,
-                             inBundle bundle: Bundle? = nil) throws -> Stylesheet? {
+    public static func with(name stylesheetName: String,
+                            inBundle bundle: Bundle? = nil) throws -> Stylesheet? {
         
         if let inBundle = (bundle != nil) ? bundle : Bundle.main,
             let stylesheetPath: String = inBundle.path(forResource: stylesheetName, ofType: "plist") {
@@ -81,8 +70,17 @@ open class Stylesheet: Decodable {
         }
     }
     
+    /// grabs the .plist from the given path and instantiates the styles
+    public static func with(path stylesheetPath: String) throws -> Stylesheet {
+        let stylesheetURL = URL(fileURLWithPath: stylesheetPath)
+        let stylesheetData = try Data(contentsOf: stylesheetURL)
+        return try PropertyListDecoder().decode(self.self, from: stylesheetData)
+    }
     
-    open func style(_ name: String)->Style?{
+
+    
+    
+    public func style(_ name: String)->Style?{
         return styles[name]
     }
     
