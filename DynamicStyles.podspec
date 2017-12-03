@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'DynamicStyles'
-  s.version = '0.3.0'
+  s.version = '0.4.0'
   s.license = 'MIT'
   s.summary = 'Stylesheets for iOS apps! With dynamic type scaling!'
   s.homepage = 'https://github.com/samscam/DynamicStyles'
@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   s.authors = { 'Sam Easterby-Smith' => 'me@samscam.co.uk' }
   s.source = { :git => 'https://github.com/samscam/DynamicStyles.git', :tag => s.version }
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '8.2'
 
   s.source_files = 'DynamicStyles/*.swift'
 
